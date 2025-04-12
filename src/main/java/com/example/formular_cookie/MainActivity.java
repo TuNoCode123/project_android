@@ -1,5 +1,6 @@
 package com.example.formular_cookie;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 } else if (itemId == R.id.nav_account) {
                     Toast.makeText(MainActivity.this, "Tài khoản", Toast.LENGTH_SHORT).show();
                     return true;
+
                 }
 
                 if (selectedFragment != null) {
