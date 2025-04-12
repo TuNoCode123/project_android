@@ -1,10 +1,18 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin") version "2.0.1"
 }
 
+val apikeyPropertiesFile = rootProject.file("secrets.properties")
+val apikeyProperties = Properties().apply {
+    load(apikeyPropertiesFile.inputStream())
+}
 android {
     namespace = "com.example.formular_cookie"
     compileSdk = 35
+    android.buildFeatures.buildConfig = true
 
     defaultConfig {
         applicationId = "com.example.formular_cookie"
@@ -14,6 +22,11 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField(
+            "String",
+            "SPOONACULAR_API_KEY",
+            "\"${apikeyProperties.getProperty("SPOONACULAR_API_KEY")}\""
+        )
     }
 
     buildTypes {
@@ -40,6 +53,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.google.android.material:material:1.5.0")

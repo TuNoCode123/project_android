@@ -1,1 +1,9 @@
 /build
+.env
+/.gradle
+/.idea
+/.vscode
+/gradle
+
+gradlew.bat
+*.properties

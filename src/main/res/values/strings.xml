@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Food App</string>
+    <string name="search_prompt">Enter a recipe name or ingredient to search</string>
+    <string name="no_results">No recipes found. Try a different search term.</string>
+    <string name="search_error">Error searching recipes. Please try again.</string>
+    <string name="network_error">Network error. Please check your connection and try again.</string>
 </resources>
