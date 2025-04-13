@@ -5,5 +5,7 @@
 /.vscode
 /gradle
 
+google-services.json
+
 gradlew.bat
 *.properties

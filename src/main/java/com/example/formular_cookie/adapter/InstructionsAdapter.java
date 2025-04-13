@@ -17,9 +17,9 @@ import java.util.List;
 
 public class InstructionsAdapter extends RecyclerView.Adapter<InstructionsAdapter.InstructionViewHolder> {
 
-    private final Context context;
-    private final List<Instruction> instructions;
-    private final List<InstructionStep> flattenedSteps;
+    private Context context;
+    private List<Instruction> instructions;
+    private List<InstructionStep> flattenedSteps;
 
     public InstructionsAdapter(Context context) {
         this.context = context;
@@ -38,10 +38,10 @@ public class InstructionsAdapter extends RecyclerView.Adapter<InstructionsAdapte
     public void onBindViewHolder(@NonNull InstructionViewHolder holder, int position) {
         InstructionStep step = flattenedSteps.get(position);
 
-        // Đặt số thứ tự bước
+        // Set step number
         holder.tvStepNumber.setText(String.valueOf(step.number));
 
-        // Đặt hướng dẫn chi tiết
+        // Set step instruction
         holder.tvStepInstruction.setText(step.instruction);
     }
 
@@ -57,7 +57,7 @@ public class InstructionsAdapter extends RecyclerView.Adapter<InstructionsAdapte
         if (newInstructions != null) {
             instructions.addAll(newInstructions);
 
-            // Chuyển đổi cấu trúc instructions thành danh sách các bước
+            // Flatten the instructions into a single list of steps
             for (Instruction instruction : instructions) {
                 if (instruction.getSteps() != null) {
                     for (Instruction.Step step : instruction.getSteps()) {
@@ -80,7 +80,7 @@ public class InstructionsAdapter extends RecyclerView.Adapter<InstructionsAdapte
         }
     }
 
-    // Lớp hỗ trợ chuyển đổi cấu trúc instruction
+    // Helper class to flatten the instruction steps
     private static class InstructionStep {
         int number;
         String instruction;

@@ -22,18 +22,12 @@ import com.bumptech.glide.Glide;
 import com.example.formular_cookie.R;
 import com.example.formular_cookie.adapter.IngredientsAdapter;
 import com.example.formular_cookie.adapter.InstructionsAdapter;
-import com.example.formular_cookie.api.ApiClient;
 import com.example.formular_cookie.model.Recipe;
-import com.example.formular_cookie.model.RecipeDetailResponse;
+import com.example.formular_cookie.repository.FirebaseRecipeRepository;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class RecipeDetailFragment extends Fragment {
 
-    private static final String API_KEY = BuildConfig.SPOONACULAR_API_KEY;
     private static final String ARG_RECIPE = "recipe";
 
     private ImageView ivRecipeImage;
@@ -47,7 +41,7 @@ public class RecipeDetailFragment extends Fragment {
     private InstructionsAdapter instructionsAdapter;
 
     private Recipe recipe;
-    private Call<RecipeDetailResponse> currentCall;
+    private FirebaseRecipeRepository recipeRepository;
 
     public static RecipeDetailFragment newInstance(Recipe recipe) {
         RecipeDetailFragment fragment = new RecipeDetailFragment();
@@ -64,12 +58,14 @@ public class RecipeDetailFragment extends Fragment {
         if (getArguments() != null) {
             recipe = getArguments().getParcelable(ARG_RECIPE);
         }
+
+        // Khởi tạo FirebaseRecipeRepository
+        recipeRepository = FirebaseRecipeRepository.getInstance(requireContext());
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-            @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
 
         initViews(view);
@@ -78,7 +74,7 @@ public class RecipeDetailFragment extends Fragment {
         if (recipe != null) {
             displayBasicRecipeInfo();
 
-            // Lấy toàn bộ thông tin công thức nếu chưa có
+            // Lấy thông tin chi tiết công thức nếu chưa có
             if (recipe.getIngredients() == null || recipe.getIngredients().isEmpty() ||
                     recipe.getInstructions() == null || recipe.getInstructions().isEmpty()) {
                 fetchRecipeDetails(recipe.getId());
@@ -89,15 +85,6 @@ public class RecipeDetailFragment extends Fragment {
         }
 
         return view;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        // Hủy gọi API nếu có
-        if (currentCall != null) {
-            currentCall.cancel();
-        }
     }
 
     private void initViews(View view) {
@@ -141,7 +128,7 @@ public class RecipeDetailFragment extends Fragment {
                 .centerCrop()
                 .into(ivRecipeImage);
 
-        // Đặt thời gian nấu, số phần ăn và điểm sức khỏe
+        // Set thông tin cơ bản
         if (recipe.getReadyInMinutes() > 0) {
             tvReadyTime.setText("Ready in " + recipe.getReadyInMinutes() + " minutes");
         }
@@ -154,53 +141,42 @@ public class RecipeDetailFragment extends Fragment {
             tvHealthScore.setText("Health score: " + recipe.getHealthScore());
         }
 
-        // Đặt tóm tắt công thức nếu có
+        // Set tóm tắt công thức nếu có
         if (recipe.getSummary() != null && !recipe.getSummary().isEmpty()) {
             tvSummary.setText(Html.fromHtml(recipe.getSummary()));
         }
 
-        // Đặt hình ảnh tác giả nếu có
+        // Set nguyên liệu nếu có
         if (recipe.getIngredients() != null && !recipe.getIngredients().isEmpty()) {
             ingredientsAdapter.updateData(recipe.getIngredients());
         }
 
-        // Đặt hướng dẫn nếu có
+        // Set hướng dẫn nếu có
         if (recipe.getInstructions() != null && !recipe.getInstructions().isEmpty()) {
             instructionsAdapter.updateData(recipe.getInstructions());
         }
     }
 
-    private void fetchRecipeDetails(int recipeId) {
+    private void fetchRecipeDetails(String recipeId) {
         progressBar.setVisibility(View.VISIBLE);
 
-        currentCall = ApiClient.getSpoonacularApi().getRecipeDetails(recipeId, API_KEY, true);
-        currentCall.enqueue(new Callback<RecipeDetailResponse>() {
+        recipeRepository.getRecipeById(recipeId, new FirebaseRecipeRepository.OnRecipeLoadedListener() {
             @Override
-            public void onResponse(Call<RecipeDetailResponse> call, Response<RecipeDetailResponse> response) {
-                if (!isAdded())
-                    return; // Fragment not attached to activity
+            public void onRecipeLoaded(Recipe loadedRecipe) {
+                if (!isAdded()) return;
 
                 progressBar.setVisibility(View.GONE);
-
-                if (response.isSuccessful() && response.body() != null) {
-                    recipe = response.body();
-                    displayBasicRecipeInfo();
-                } else {
-                    Toast.makeText(requireContext(),
-                            "Failed to load recipe details", Toast.LENGTH_SHORT).show();
-                }
+                recipe = loadedRecipe;
+                displayBasicRecipeInfo();
             }
 
             @Override
-            public void onFailure(Call<RecipeDetailResponse> call, Throwable t) {
-                if (!isAdded())
-                    return; // Fragment not attached to activity
+            public void onError(String errorMessage) {
+                if (!isAdded()) return;
 
-                if (!call.isCanceled()) {
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(requireContext(),
-                            "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(requireContext(),
+                        "Error loading recipe details: " + errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
     }

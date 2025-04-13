@@ -3,182 +3,175 @@ package com.example.formular_cookie.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Recipe implements Parcelable {
-    @SerializedName("id")
-    private int id;
-
-    @SerializedName("title")
+    private String id;
     private String title;
-
-    @SerializedName("image")
-    private String image;
-
-    @SerializedName("imageType")
-    private String imageType;
-
-    @SerializedName("readyInMinutes")
+    private String imageUrl;
     private int readyInMinutes;
-
-    @SerializedName("servings")
     private int servings;
-
-    @SerializedName("summary")
     private String summary;
-
-    @SerializedName("sourceUrl")
     private String sourceUrl;
-
-    @SerializedName("sourceName")
     private String sourceName;
-
-    @SerializedName("likes")
     private int likes;
-
-    @SerializedName("healthScore")
     private double healthScore;
-
-    @SerializedName("extendedIngredients")
     private List<Ingredient> ingredients;
-
-    @SerializedName("analyzedInstructions")
     private List<Instruction> instructions;
-
-    // Add category field for local data
     private String category;
-
-    // Add authorImageUrl field for local data
     private String authorImageUrl;
-
-    // Add followers field for local data
     private int followers;
 
-    // Default constructor
     public Recipe() {
         ingredients = new ArrayList<>();
         instructions = new ArrayList<>();
     }
 
-    // Constructor for local sample data
-    public Recipe(String id, String title, String imageUrl, String authorName,
-                  String authorImageUrl, int followers, int likes, String readyTime, String category) {
-        this.id = Integer.parseInt(id);
-        this.title = title;
-        this.image = imageUrl;
-        this.sourceName = authorName;
-        this.authorImageUrl = authorImageUrl;
-        this.followers = followers;
-        this.likes = likes;
-        // Parse readyTime to minutes (assuming format like "2h" or "30m")
-        this.readyInMinutes = parseReadyTime(readyTime);
-        this.category = category;
-        this.ingredients = new ArrayList<>();
-        this.instructions = new ArrayList<>();
-    }
-
-    // Helper method to parse ready time string to minutes
-    private int parseReadyTime(String readyTime) {
-        if (readyTime == null || readyTime.isEmpty()) {
-            return 0;
-        }
-
-        try {
-            if (readyTime.endsWith("h")) {
-                // Convert hours to minutes
-                return Integer.parseInt(readyTime.substring(0, readyTime.length() - 1)) * 60;
-            } else if (readyTime.endsWith("m")) {
-                // Already in minutes
-                return Integer.parseInt(readyTime.substring(0, readyTime.length() - 1));
-            } else {
-                // Try to parse as minutes
-                return Integer.parseInt(readyTime);
-            }
-        } catch (NumberFormatException e) {
-            return 0;
-        }
-    }
-
-    // Getters
-    public int getId() {
+    // Getters and setters
+    public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getImage() {
-        return image;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getFullImageUrl() {
-        if (image != null && !image.startsWith("http")) {
-            return "https://spoonacular.com/recipeImages/" + image;
+        if (imageUrl == null || imageUrl.isEmpty()) {
+            return "";
         }
-        return image;
+        
+        // Check if the URL is already a complete URL
+        if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
+            return imageUrl;
+        } 
+        
+        // If it's a Firebase Storage reference without the full URL
+        else if (imageUrl.startsWith("/")) {
+            return "https://firebasestorage.googleapis.com/v0/b/your-firebase-storage-bucket/o" + imageUrl + "?alt=media";
+        }
+        
+        return imageUrl;
     }
 
     public int getReadyInMinutes() {
         return readyInMinutes;
     }
 
+    public void setReadyInMinutes(int readyInMinutes) {
+        this.readyInMinutes = readyInMinutes;
+    }
+
     public int getServings() {
         return servings;
+    }
+
+    public void setServings(int servings) {
+        this.servings = servings;
     }
 
     public String getSummary() {
         return summary;
     }
 
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
     public String getSourceUrl() {
         return sourceUrl;
+    }
+
+    public void setSourceUrl(String sourceUrl) {
+        this.sourceUrl = sourceUrl;
     }
 
     public String getSourceName() {
         return sourceName;
     }
 
+    public void setSourceName(String sourceName) {
+        this.sourceName = sourceName;
+    }
+
     public int getLikes() {
         return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 
     public double getHealthScore() {
         return healthScore;
     }
 
+    public void setHealthScore(double healthScore) {
+        this.healthScore = healthScore;
+    }
+
     public List<Ingredient> getIngredients() {
         return ingredients;
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 
     public List<Instruction> getInstructions() {
         return instructions;
     }
 
-    // Add getter for category
+    public void setInstructions(List<Instruction> instructions) {
+        this.instructions = instructions;
+    }
+
     public String getCategory() {
         return category;
     }
 
-    // Add getter for authorImageUrl
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     public String getAuthorImageUrl() {
         return authorImageUrl;
     }
 
-    // Add getter for followers
+    public void setAuthorImageUrl(String authorImageUrl) {
+        this.authorImageUrl = authorImageUrl;
+    }
+
     public int getFollowers() {
         return followers;
     }
 
+    public void setFollowers(int followers) {
+        this.followers = followers;
+    }
+
     // Parcelable implementation
     protected Recipe(Parcel in) {
-        id = in.readInt();
+        id = in.readString();
         title = in.readString();
-        image = in.readString();
-        imageType = in.readString();
+        imageUrl = in.readString();
         readyInMinutes = in.readInt();
         servings = in.readInt();
         summary = in.readString();
@@ -197,10 +190,9 @@ public class Recipe implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
+        dest.writeString(id);
         dest.writeString(title);
-        dest.writeString(image);
-        dest.writeString(imageType);
+        dest.writeString(imageUrl);
         dest.writeInt(readyInMinutes);
         dest.writeInt(servings);
         dest.writeString(summary);
