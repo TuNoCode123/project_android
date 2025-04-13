@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="iemail" type="id" />
+    <item name="rememberuser" type="id" />
+    <item name="btnLogin" type="id" />
+</resources>

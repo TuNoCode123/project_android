@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:text="Chào Từ Sena"
+                android:text="Chào Tú Sena"
                 android:textColor="#333333"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -188,15 +188,15 @@
                 android:textColor="#000000"
                 android:layout_marginTop="24dp"/>
 
+            <!-- DANH SÁCH MÓN ĂN -->
+
             <ImageView
                 android:id="@+id/image2"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:scaleType="centerCrop"
                 android:layout_marginTop="8dp"
-               />
+                android:scaleType="centerCrop" />
 
-            <!-- DANH SÁCH MÓN ĂN -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -231,11 +231,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                />
+<!--            VIDEO HƯỚNG DẪN-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" VIDEO HƯỚNG DẪN"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="#000000"
+                android:layout_marginVertical="25dp"
+                />
 
-            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:background="@android:color/black">
+                android:background="@android:color/transparent">
 
                 <!-- Video hiển thị -->
                 <VideoView
@@ -250,8 +260,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/home_image_1" />
-
+                    android:src="@drawable/image_home_7" />
                 <!-- Nút play ở giữa -->
                 <ImageView
                     android:id="@+id/playButton"
@@ -260,6 +269,61 @@
                     android:layout_centerInParent="true"
                     android:src="@drawable/play_video" />
             </RelativeLayout>
+
+<!--            ẨM THỰC BỐN PHƯƠNG-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ẨM THỰC BỐN PHƯƠNG"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="#000000"
+                android:layout_marginVertical="25dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Xem tất cả >"
+                android:textSize="11dp"
+                android:textColor="#1F74B4"
+                android:gravity="end"
+                />
+            <FrameLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:background="@android:color/transparent">
+
+                <ImageView
+                    android:id="@+id/image4"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"
+                    android:layout_marginTop="8dp"
+                    />
+
+
+                <!-- Dải xám mờ nổi lên ảnh, cách bottom một chút -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="vertical"
+                    android:background="#AA787575"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/text_food_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MÓN VIỆT"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </FrameLayout>
 
 
         </LinearLayout>

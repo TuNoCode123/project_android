@@ -3,6 +3,7 @@ package com.example.formular_cookie;// HomeFragment.java
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.formular_cookie.R;
 import com.google.android.material.chip.Chip;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +42,11 @@ public class HomeFragment extends Fragment {
     private Chip chipCookingVideos;
     private Chip chipIngredientSuggestions;
 
-    private ImageView image1, image2, image3;
+    private ImageView image1, image2, image3,image4;
 
     VideoView videoView;
     ImageView playButton,videoThumbnail;
+    TextView textView;
 
 
 
@@ -66,9 +71,29 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(getContext(), "Notifications", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
+        textView=view.findViewById(R.id.tvGreeting);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+//            Log.d("FIREBASE_USER", "=== User Info ===");
+//            Log.d("FIREBASE_USER", "UID: " + user.getUid());
+//            Log.d("FIREBASE_USER", "Email: " + user.getEmail());
+//            Log.d("FIREBASE_USER", "Name: " + user.getDisplayName());
+//            Log.d("FIREBASE_USER", "Phone: " + user.getPhoneNumber());
+//            Log.d("FIREBASE_USER", "Photo URL: " + user.getPhotoUrl());
+//
+//            for (UserInfo profile : user.getProviderData()) {
+//                Log.d("FIREBASE_USER", "Provider ID: " + profile.getProviderId());
+//                Log.d("FIREBASE_USER", "UID: " + profile.getUid());
+//                Log.d("FIREBASE_USER", "Name: " + profile.getDisplayName());
+//                Log.d("FIREBASE_USER", "Email: " + profile.getEmail());
+//                Log.d("FIREBASE_USER", "Photo URL: " + profile.getPhotoUrl());
+//            }
+//            String uid = user.getUid(); // ID duy nhất
+            String email = user.getEmail(); // email người dùng
+//            String name = user.getDisplayName(); // tên (nếu có)
+            textView.setText("Xin chào "+email);
+//            Uri photo = user.getPhotoUrl(); // avatar (nếu có)
+        }
 
 
         chipNewRecipes = view.findViewById(R.id.chipNewRecipes);
@@ -80,13 +105,12 @@ public class HomeFragment extends Fragment {
         image1 = view.findViewById(R.id.image1);
         image2 = view.findViewById(R.id.image2);
         image3 = view.findViewById(R.id.image3);
+        image4 = view.findViewById(R.id.image4);
 
-
-        Glide.with(getContext())
-                .load(R.drawable.home_image_1)
-                .into(image1);
+        Glide.with(getContext()).load(R.drawable.home_image_1).into(image1);
         Glide.with(getContext()).load(R.drawable.home_image_2).into(image2);
         Glide.with(getContext()).load(R.drawable.home_image_3).into(image3);
+        Glide.with(getContext()).load(R.drawable.image_home_4).into(image4);
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -96,7 +120,7 @@ public class HomeFragment extends Fragment {
         FoodItem item1 = new FoodItem();
         item1.title = "Món Bò Chiên – Hương Vị Đậm Đà, Giòn Rụm";
         item1.description = "Bò chiên là một món ăn hấp dẫn với lớp vỏ vàng giòn, thịt bò bên trong mềm, thấm đẫm gia vị, tạo nên hương vị khó cưỡng. Đây là một món ăn phổ biến trong nhiều nền ẩm thực....";
-        item1.imageResId = R.drawable.home_image_1;
+        item1.imageResId = R.drawable.image_home_5;
         item1.userName = "An clock";
         item1.userFollowers = "12.3K Followers";
 
@@ -105,7 +129,7 @@ public class HomeFragment extends Fragment {
         FoodItem item2 = new FoodItem();
         item2.title = "Món Bánh Xèo – Giòn Rụm, Thơm Ngon Khó Cưỡng";
         item2.description = "Bánh xèo là một món ăn dân dã nhưng lại có sức hút đặc biệt trong ẩm thực Việt Nam. Lớp vỏ giòn rụm, nhân thơm lừng, kết hợp với rau sống và nước chấm ...";
-        item2.imageResId = R.drawable.home_image_1;
+        item2.imageResId = R.drawable.image_home_7;
         item2.userName = "Zero";
         item2.userFollowers = "3K Followers";
 
@@ -120,7 +144,7 @@ public class HomeFragment extends Fragment {
          playButton = view.findViewById(R.id.playButton);
          videoThumbnail = view.findViewById(R.id.videoThumbnail);
 
-        String videoPath = "android.resource://" + getContext().getPackageName()+ "/" + R.raw.video;
+        String videoPath = "android.resource://" + getContext().getPackageName()+ "/" + R.raw.video_cook;
         Uri uri = Uri.parse(videoPath);
         videoView.setVideoURI(uri);
 
