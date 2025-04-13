@@ -54,20 +54,6 @@ public class Recipe implements Parcelable {
     }
 
     public String getFullImageUrl() {
-        if (imageUrl == null || imageUrl.isEmpty()) {
-            return "";
-        }
-        
-        // Check if the URL is already a complete URL
-        if (imageUrl.startsWith("http://") || imageUrl.startsWith("https://")) {
-            return imageUrl;
-        } 
-        
-        // If it's a Firebase Storage reference without the full URL
-        else if (imageUrl.startsWith("/")) {
-            return "https://firebasestorage.googleapis.com/v0/b/your-firebase-storage-bucket/o" + imageUrl + "?alt=media";
-        }
-        
         return imageUrl;
     }
 
