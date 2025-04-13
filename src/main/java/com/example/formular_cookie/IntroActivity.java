@@ -22,16 +22,6 @@ public class IntroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_intro);
-
-//        Button btnContinue = findViewById(R.id.btn_continue);
-//        btnContinue.setOnClickListener(view -> {
-//            SharedPreferences.Editor editor = getSharedPreferences("app_prefs", MODE_PRIVATE).edit();
-//            editor.putBoolean("first_time", false);
-//            editor.apply();
-//            startActivity(new Intent(IntroActivity.this, LoginActivity.class));
-//            finish();
-//        });
-
         viewPager = findViewById(R.id.onboardingViewPager);
         buttonStart = findViewById(R.id.buttonStart);
         WormDotsIndicator tabLayout = findViewById(R.id.dots_indicator);

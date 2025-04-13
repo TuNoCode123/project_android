@@ -3,6 +3,7 @@ package com.example.formular_cookie;// HomeFragment.java
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.formular_cookie.R;
 import com.google.android.material.chip.Chip;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +42,12 @@ public class HomeFragment extends Fragment {
     private Chip chipCookingVideos;
     private Chip chipIngredientSuggestions;
 
-    private ImageView image1, image2, image3;
+    private ImageView image1, image2, image3,playButton,videoThumbnail;
 
     VideoView videoView;
-    ImageView playButton,videoThumbnail;
+    TextView textView;
 
-
+//    tvGreeting
 
     @Nullable
     @Override
@@ -68,7 +72,29 @@ public class HomeFragment extends Fragment {
         });
 
 
-
+        textView=view.findViewById(R.id.tvGreeting);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+//            Log.d("FIREBASE_USER", "=== User Info ===");
+//            Log.d("FIREBASE_USER", "UID: " + user.getUid());
+//            Log.d("FIREBASE_USER", "Email: " + user.getEmail());
+//            Log.d("FIREBASE_USER", "Name: " + user.getDisplayName());
+//            Log.d("FIREBASE_USER", "Phone: " + user.getPhoneNumber());
+//            Log.d("FIREBASE_USER", "Photo URL: " + user.getPhotoUrl());
+//
+//            for (UserInfo profile : user.getProviderData()) {
+//                Log.d("FIREBASE_USER", "Provider ID: " + profile.getProviderId());
+//                Log.d("FIREBASE_USER", "UID: " + profile.getUid());
+//                Log.d("FIREBASE_USER", "Name: " + profile.getDisplayName());
+//                Log.d("FIREBASE_USER", "Email: " + profile.getEmail());
+//                Log.d("FIREBASE_USER", "Photo URL: " + profile.getPhotoUrl());
+//            }
+            String uid = user.getUid(); // ID duy nhất
+            String email = user.getEmail(); // email người dùng
+            String name = user.getDisplayName(); // tên (nếu có)
+            textView.setText("Xin chào "+email);
+            Uri photo = user.getPhotoUrl(); // avatar (nếu có)
+        }
 
 
         chipNewRecipes = view.findViewById(R.id.chipNewRecipes);
