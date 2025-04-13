@@ -1,15 +1,14 @@
 package com.example.formular_cookie;// HomeFragment.java
 
 
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -25,6 +24,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.formular_cookie.R;
 import com.google.android.material.chip.Chip;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +46,7 @@ public class HomeFragment extends Fragment {
 
     VideoView videoView;
     ImageView playButton,videoThumbnail;
-
-    private boolean isPlaying = false; // Để kiểm tra trạng thái
+    TextView textView;
 
 
 
@@ -70,9 +71,29 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(getContext(), "Notifications", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-
+        textView=view.findViewById(R.id.tvGreeting);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+//            Log.d("FIREBASE_USER", "=== User Info ===");
+//            Log.d("FIREBASE_USER", "UID: " + user.getUid());
+//            Log.d("FIREBASE_USER", "Email: " + user.getEmail());
+//            Log.d("FIREBASE_USER", "Name: " + user.getDisplayName());
+//            Log.d("FIREBASE_USER", "Phone: " + user.getPhoneNumber());
+//            Log.d("FIREBASE_USER", "Photo URL: " + user.getPhotoUrl());
+//
+//            for (UserInfo profile : user.getProviderData()) {
+//                Log.d("FIREBASE_USER", "Provider ID: " + profile.getProviderId());
+//                Log.d("FIREBASE_USER", "UID: " + profile.getUid());
+//                Log.d("FIREBASE_USER", "Name: " + profile.getDisplayName());
+//                Log.d("FIREBASE_USER", "Email: " + profile.getEmail());
+//                Log.d("FIREBASE_USER", "Photo URL: " + profile.getPhotoUrl());
+//            }
+//            String uid = user.getUid(); // ID duy nhất
+            String email = user.getEmail(); // email người dùng
+//            String name = user.getDisplayName(); // tên (nếu có)
+            textView.setText("Xin chào "+email);
+//            Uri photo = user.getPhotoUrl(); // avatar (nếu có)
+        }
 
 
         chipNewRecipes = view.findViewById(R.id.chipNewRecipes);
@@ -85,8 +106,6 @@ public class HomeFragment extends Fragment {
         image2 = view.findViewById(R.id.image2);
         image3 = view.findViewById(R.id.image3);
         image4 = view.findViewById(R.id.image4);
-
-
 
         Glide.with(getContext()).load(R.drawable.home_image_1).into(image1);
         Glide.with(getContext()).load(R.drawable.home_image_2).into(image2);
@@ -110,7 +129,7 @@ public class HomeFragment extends Fragment {
         FoodItem item2 = new FoodItem();
         item2.title = "Món Bánh Xèo – Giòn Rụm, Thơm Ngon Khó Cưỡng";
         item2.description = "Bánh xèo là một món ăn dân dã nhưng lại có sức hút đặc biệt trong ẩm thực Việt Nam. Lớp vỏ giòn rụm, nhân thơm lừng, kết hợp với rau sống và nước chấm ...";
-        item2.imageResId = R.drawable.image_home_6;
+        item2.imageResId = R.drawable.image_home_7;
         item2.userName = "Zero";
         item2.userFollowers = "3K Followers";
 
@@ -124,30 +143,16 @@ public class HomeFragment extends Fragment {
          videoView = view.findViewById(R.id.videoView);
          playButton = view.findViewById(R.id.playButton);
          videoThumbnail = view.findViewById(R.id.videoThumbnail);
-        String videoPath = "android.resource://" + getContext().getPackageName() + "/" + R.raw.video_cook;
+
+        String videoPath = "android.resource://" + getContext().getPackageName()+ "/" + R.raw.video_cook;
         Uri uri = Uri.parse(videoPath);
         videoView.setVideoURI(uri);
+
         playButton.setOnClickListener(v -> {
             videoThumbnail.setVisibility(View.GONE);
             playButton.setVisibility(View.GONE);
             videoView.setVisibility(View.VISIBLE);
-
-            // Khi video sẵn sàng -> bắt đầu phát
-            videoView.setOnPreparedListener(mp -> {
-                isPlaying = true;
-                videoView.start();
-            });
-
-            // Khi video kết thúc: hiện lại nút + ảnh
-            videoView.setOnCompletionListener(mp -> {
-                isPlaying = false;
-                videoView.seekTo(0); // Quay về đầu video
-                videoView.setVisibility(View.GONE);
-                videoThumbnail.setVisibility(View.VISIBLE);
-                playButton.setVisibility(View.VISIBLE);
-            });
-
-            videoView.setOnClickListener(null); // Vô hiệu hóa click phát
+            videoView.start();
         });
 
 
