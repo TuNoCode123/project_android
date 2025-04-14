@@ -12,6 +12,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.example.formular_cookie.repository.FirebaseRecipeRepository;
 
+import com.example.formular_cookie.fragment.RecipeDetailFragment;
+import com.example.formular_cookie.fragment.RecipeSearchFragment;
+
 public class MainActivity extends AppCompatActivity implements RecipeSearchFragment.OnRecipeSelectedListener {
     private BottomNavigationView bottomNavigationView;
 

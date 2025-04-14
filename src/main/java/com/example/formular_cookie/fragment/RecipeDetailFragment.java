@@ -1,4 +1,4 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.fragment;
 
 import android.os.Bundle;
 import android.text.Html;
@@ -147,9 +147,9 @@ public class RecipeDetailFragment extends Fragment {
         }
 
         // Set nguyên liệu nếu có
-        if (recipe.getIngredients() != null && !recipe.getIngredients().isEmpty()) {
-            ingredientsAdapter.updateData(recipe.getIngredients());
-        }
+//        if (recipe.getIngredients() != null && !recipe.getIngredients().isEmpty()) {
+//            ingredientsAdapter.updateData(recipe.getIngredients());
+//        }
 
         // Set hướng dẫn nếu có
         if (recipe.getInstructions() != null && !recipe.getInstructions().isEmpty()) {

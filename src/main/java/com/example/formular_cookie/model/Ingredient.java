@@ -12,17 +12,14 @@ public class Ingredient implements Parcelable {
     @SerializedName("name")
     private String name;
 
-    @SerializedName("amount")
-    private double amount;
-
-    @SerializedName("unit")
-    private String unit;
-
-    @SerializedName("image")
-    private String image;
-
-    @SerializedName("original")
-    private String original;
+//    @SerializedName("amount")
+//    private double amount;
+//
+//    @SerializedName("unit")
+//    private String unit;
+//
+//    @SerializedName("image")
+//    private String image;
 
     // Default constructor
     public Ingredient() {
@@ -37,40 +34,35 @@ public class Ingredient implements Parcelable {
         return name;
     }
 
-    public double getAmount() {
-        return amount;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public String getOriginal() {
-        return original;
-    }
+//    public double getAmount() {
+//        return amount;
+//    }
+//
+//    public String getUnit() {
+//        return unit;
+//    }
+//
+//    public String getImage() {
+//        return image;
+//    }
+//
 
     // Parcelable implementation
     protected Ingredient(Parcel in) {
         id = in.readInt();
         name = in.readString();
-        amount = in.readDouble();
-        unit = in.readString();
-        image = in.readString();
-        original = in.readString();
+//        amount = in.readDouble();
+//        unit = in.readString();
+//        image = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(name);
-        dest.writeDouble(amount);
-        dest.writeString(unit);
-        dest.writeString(image);
-        dest.writeString(original);
+//        dest.writeDouble(amount);
+//        dest.writeString(unit);
+//        dest.writeString(image);
     }
 
     @Override

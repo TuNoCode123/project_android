@@ -4,12 +4,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Recipe implements Parcelable {
     private String id;
     private String title;
-    private String imageUrl;
+    private String image;
     private int readyInMinutes;
     private int servings;
     private String summary;
@@ -17,14 +18,15 @@ public class Recipe implements Parcelable {
     private String sourceName;
     private int likes;
     private double healthScore;
-    private List<Ingredient> ingredients;
+    //TODO: Nên dùng List<Ingredient> ingredients
+    private String ingredients;
     private List<Instruction> instructions;
     private String category;
     private String authorImageUrl;
     private int followers;
 
     public Recipe() {
-        ingredients = new ArrayList<>();
+//        ingredients = new ArrayList<>();
         instructions = new ArrayList<>();
     }
 
@@ -45,16 +47,16 @@ public class Recipe implements Parcelable {
         this.title = title;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImage() {
+        return image;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getFullImageUrl() {
-        return imageUrl;
+        return image;
     }
 
     public int getReadyInMinutes() {
@@ -113,13 +115,19 @@ public class Recipe implements Parcelable {
         this.healthScore = healthScore;
     }
 
-    public List<Ingredient> getIngredients() {
+    public String getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
+    public List<String> getIngredientsList() {
+        if (ingredients == null || ingredients.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return Arrays.asList(ingredients.split(","));
     }
+//    public void setIngredients(List<Ingredient> ingredients) {
+//        this.ingredients = ingredients;
+//    }
 
     public List<Instruction> getInstructions() {
         return instructions;
@@ -153,11 +161,12 @@ public class Recipe implements Parcelable {
         this.followers = followers;
     }
 
+
     // Parcelable implementation
     protected Recipe(Parcel in) {
         id = in.readString();
         title = in.readString();
-        imageUrl = in.readString();
+        image = in.readString();
         readyInMinutes = in.readInt();
         servings = in.readInt();
         summary = in.readString();
@@ -168,8 +177,9 @@ public class Recipe implements Parcelable {
         category = in.readString();
         authorImageUrl = in.readString();
         followers = in.readInt();
-        ingredients = new ArrayList<>();
-        in.readList(ingredients, Ingredient.class.getClassLoader());
+//        ingredients = new ArrayList<>();
+//        in.readList(ingredients, Ingredient.class.getClassLoader());
+        ingredients = in.readString();
         instructions = new ArrayList<>();
         in.readList(instructions, Instruction.class.getClassLoader());
     }
@@ -178,7 +188,7 @@ public class Recipe implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(title);
-        dest.writeString(imageUrl);
+        dest.writeString(image);
         dest.writeInt(readyInMinutes);
         dest.writeInt(servings);
         dest.writeString(summary);
@@ -189,7 +199,8 @@ public class Recipe implements Parcelable {
         dest.writeString(category);
         dest.writeString(authorImageUrl);
         dest.writeInt(followers);
-        dest.writeList(ingredients);
+//        dest.writeList(ingredients);
+        dest.writeString(ingredients);
         dest.writeList(instructions);
     }
 

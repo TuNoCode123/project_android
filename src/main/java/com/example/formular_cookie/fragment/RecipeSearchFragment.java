@@ -1,4 +1,4 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.formular_cookie.R;
 import com.example.formular_cookie.adapter.RecipeAdapter;
 import com.example.formular_cookie.model.Recipe;
 import com.example.formular_cookie.repository.FirebaseRecipeRepository;

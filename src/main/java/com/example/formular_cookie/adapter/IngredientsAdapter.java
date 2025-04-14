@@ -42,21 +42,21 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         holder.tvIngredientName.setText(ingredient.getName());
 
         // Đặt số lượng và đơn vị
-        String amount = String.format("%.1f %s", ingredient.getAmount(), ingredient.getUnit());
-        holder.tvIngredientAmount.setText(amount);
+//        String amount = String.format("%.1f %s", ingredient.getAmount(), ingredient.getUnit());
+//        holder.tvIngredientAmount.setText(amount);
 
         // Tải hình ảnh nguyên liệu nếu có
-        if (ingredient.getImage() != null && !ingredient.getImage().isEmpty()) {
-            String imageUrl = "https://spoonacular.com/cdn/ingredients_100x100/" + ingredient.getImage();
-            Glide.with(context)
-                    .load(imageUrl)
-                    .placeholder(R.drawable.placeholder_ingredient)
-                    .error(R.drawable.error_ingredient)
-                    .centerCrop()
-                    .into(holder.ivIngredient);
-        } else {
-            holder.ivIngredient.setImageResource(R.drawable.placeholder_ingredient);
-        }
+//        if (ingredient.getImage() != null && !ingredient.getImage().isEmpty()) {
+//            String imageUrl = "https://spoonacular.com/cdn/ingredients_100x100/" + ingredient.getImage();
+//            Glide.with(context)
+//                    .load(imageUrl)
+//                    .placeholder(R.drawable.placeholder_ingredient)
+//                    .error(R.drawable.error_ingredient)
+//                    .centerCrop()
+//                    .into(holder.ivIngredient);
+//        } else {
+//            holder.ivIngredient.setImageResource(R.drawable.placeholder_ingredient);
+//        }
     }
 
     @Override

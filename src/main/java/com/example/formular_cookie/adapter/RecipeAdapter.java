@@ -2,16 +2,24 @@ package com.example.formular_cookie.adapter;
 
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.formular_cookie.R;
 import com.example.formular_cookie.model.Recipe;
 
@@ -65,23 +73,39 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         }
 
         // Set followers if available, otherwise show category
-        if (recipe.getFollowers() > 0) {
-            holder.tvFollowers.setText(formatNumber(recipe.getFollowers()) + " Followers");
-        } else if (recipe.getCategory() != null && !recipe.getCategory().isEmpty()) {
-            holder.tvFollowers.setText(recipe.getCategory());
-        } else {
-            holder.tvFollowers.setText("Recipe");
-        }
+//        if (recipe.getFollowers() > 0) {
+//            holder.tvFollowers.setText(formatNumber(recipe.getFollowers()) + " Followers");
+//        } else if (recipe.getCategory() != null && !recipe.getCategory().isEmpty()) {
+//            holder.tvFollowers.setText(recipe.getCategory());
+//        } else {
+//            holder.tvFollowers.setText("Recipe");
+//        }
 
-        // Load recipe image
+        Log.d("RecipeAdapter", "Recipe image URL: " + recipe.getFullImageUrl());
+        // Tải ảnh công thức
+        holder.progressImage.setVisibility(View.VISIBLE);
+
         Glide.with(context)
                 .load(recipe.getFullImageUrl())
                 .placeholder(R.drawable.placeholder_image)
                 .error(R.drawable.error_image)
+                .listener(new RequestListener<>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        holder.progressImage.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(android.graphics.drawable.Drawable resource, Object model, Target<android.graphics.drawable.Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        holder.progressImage.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
                 .centerCrop()
                 .into(holder.ivRecipe);
 
-        // Load author image if available, otherwise use placeholder
+        // Tải ảnh tác giả, nếu không có thì dùng ảnh mặc định
         if (recipe.getAuthorImageUrl() != null && !recipe.getAuthorImageUrl().isEmpty()) {
             Glide.with(context)
                     .load(recipe.getAuthorImageUrl())
@@ -130,17 +154,20 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
         ImageView ivRecipe, ivAuthor;
         TextView tvRecipeTitle, tvAuthorName, tvFollowers, tvLikes, tvTime;
+        ProgressBar progressImage;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
+
 
             ivRecipe = itemView.findViewById(R.id.iv_recipe);
             ivAuthor = itemView.findViewById(R.id.iv_author);
             tvRecipeTitle = itemView.findViewById(R.id.tv_recipe_title);
             tvAuthorName = itemView.findViewById(R.id.tv_author_name);
-            tvFollowers = itemView.findViewById(R.id.tv_followers);
+//            tvFollowers = itemView.findViewById(R.id.tv_followers);
             tvLikes = itemView.findViewById(R.id.tv_likes);
             tvTime = itemView.findViewById(R.id.tv_time);
+            progressImage = itemView.findViewById(R.id.progress_image);
 
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
