@@ -69,6 +69,8 @@ public class RecipeDetailFragment extends Fragment {
                 btnDelete.setText("Hủy");
             }
             tvToolbarTitle.setText(recipe.getTitle());
+            tvIngredients.setText(recipe.getIngredients());
+            tvSteps.setText(recipe.getSteps());
 
 
             String imageUrl = recipe.getImageUrl();

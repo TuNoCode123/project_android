@@ -34,6 +34,8 @@ public class PostRecipeFragment extends Fragment {
     private EditText etTitle, etIngredients, etSteps;
     private ImageView ivPreview;
     private String imageUrl;
+    private Uri selectedImageUri = null;
+
     private String ingredients;
     private String steps;
     private Bundle args;
@@ -74,10 +76,8 @@ public class PostRecipeFragment extends Fragment {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                        Uri uri = result.getData().getData();
-                        imageUrl = uri.toString(); // Cập nhật imageUrl
-                        Log.d(TAG, "Image URI: " + imageUrl); // Debug
-                        ivPreview.setImageURI(uri); // Hiển thị ảnh
+                        selectedImageUri = result.getData().getData();  // Ảnh mới chọn
+                        ivPreview.setImageURI(selectedImageUri); // Hiển thị ảnh mới chọn
                     }
                 }
         );
@@ -138,13 +138,35 @@ public class PostRecipeFragment extends Fragment {
         String ingredients = etIngredients.getText().toString().trim();
         String steps = etSteps.getText().toString().trim();
 
-        Log.d(TAG, imageUrl);
 
-        if (title.isEmpty() || (!isEditMode && (imageUrl == null || imageUrl.isEmpty()))) {
+        if (title.isEmpty() || (!isEditMode && selectedImageUri == null )) {
             Toast.makeText(getContext(), "Vui lòng nhập tiêu đề và chọn ảnh", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // Upload image lên Cloudinary
+        if (selectedImageUri != null) {
+            // Nếu có ảnh mới chọn → upload
+            CloudinaryUploader uploader = new CloudinaryUploader();
+            uploader.uploadImage(requireContext(), selectedImageUri, new UploadCallback() {
+                @Override
+                public void onUploadSuccess(String uploadedUrl) {
+                    imageUrl = uploadedUrl;
+                    saveRecipeToFirebase(title, ingredients, steps, imageUrl);
+                }
+
+                @Override
+                public void onUploadFailure(String errorMessage) {
+                    Toast.makeText(getContext(), "Lỗi upload ảnh: " + errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            // Không có ảnh mới chọn → dùng ảnh cũ
+            saveRecipeToFirebase(title, ingredients, steps, imageUrl);
+        }
+    }
+
+    private void saveRecipeToFirebase(String title, String ingredients, String steps, String imageUrl) {
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("recipes");
 
         if (isEditMode) {
@@ -175,6 +197,7 @@ public class PostRecipeFragment extends Fragment {
                     .addOnFailureListener(e -> Toast.makeText(getContext(), "Lỗi lưu công thức: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         }
     }
+
 
 
 
