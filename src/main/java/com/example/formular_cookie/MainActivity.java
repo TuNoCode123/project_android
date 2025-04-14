@@ -53,8 +53,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Mua sắm", Toast.LENGTH_SHORT).show();
                     return true;
                 } else if (itemId == R.id.nav_account) {
-                    Toast.makeText(MainActivity.this, "Tài khoản", Toast.LENGTH_SHORT).show();
-                    return true;
+                    selectedFragment = new Account();
                 }
 
                 if (selectedFragment != null) {

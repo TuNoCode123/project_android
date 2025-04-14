@@ -7,41 +7,69 @@
     android:gravity="center"
     android:background="#FFFDD0"
     android:padding="20dp">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tên tài khoản"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
 
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@android:color/white"
+        android:background="@drawable/edit_text_background"
         android:hint="Tên tài khoản"
         android:padding="12dp"
         android:textSize="16sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
 
     <EditText
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@android:color/white"
+        android:background="@drawable/edit_text_background"
         android:hint="email"
         android:padding="12dp"
         android:textSize="16sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mật khẩu"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
 
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@android:color/white"
+        android:background="@drawable/edit_text_background"
         android:hint="Mật khẩu"
         android:inputType="textPassword"
         android:padding="12dp"
         android:textSize="16sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nhập lại mật khẩu"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
 
     <EditText
         android:id="@+id/repassword"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="Nhập lại mật khẩu"
-        android:background="@android:color/white"
+        android:background="@drawable/edit_text_background"
         android:padding="12dp"
         android:textSize="16sp"
         android:inputType="textPassword"/>

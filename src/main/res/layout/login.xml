@@ -7,22 +7,35 @@
     android:gravity="center"
     android:background="#FFFDD0"
     android:padding="20dp">
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Số điện thoại hoặc email"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
     <EditText
         android:id="@+id/iemail"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="Email"
-        android:background="@android:color/white"
+        android:background="@drawable/edit_text_background"
         android:padding="12dp"
         android:textSize="16sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mật khẩu"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
 
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="Mật khẩu"
-        android:background="@android:color/white"
+        android:background="@drawable/edit_text_background"
         android:padding="12dp"
         android:textSize="16sp"
         android:inputType="textPassword"/>
