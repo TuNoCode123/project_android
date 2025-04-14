@@ -71,6 +71,7 @@ public class login extends Fragment {
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 Intent intent = new Intent(getContext(), MainActivity.class);
+                                intent.putExtra("usermail", usermail);
                                 startActivity(intent);
                             } else {
                                 Toast.makeText(getContext(), "Login failed", Toast.LENGTH_SHORT).show();

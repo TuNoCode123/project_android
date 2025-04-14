@@ -1,6 +1,8 @@
 package com.example.formular_cookie;// HomeFragment.java
 
 
+import static android.content.ContentValues.TAG;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,10 +25,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.formular_cookie.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,14 +54,16 @@ public class HomeFragment extends Fragment {
     VideoView videoView;
     ImageView playButton,videoThumbnail;
     TextView textView;
-
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        String userId = firebaseUser.getUid();
         btnTheme = view.findViewById(R.id.btnTheme);
         btnNotification = view.findViewById(R.id.btnNotification);
 
@@ -89,9 +98,24 @@ public class HomeFragment extends Fragment {
 //                Log.d("FIREBASE_USER", "Photo URL: " + profile.getPhotoUrl());
 //            }
 //            String uid = user.getUid(); // ID duy nhất
-            String email = user.getEmail(); // email người dùng
 //            String name = user.getDisplayName(); // tên (nếu có)
-            textView.setText("Xin chào "+email);
+            DocumentReference docRef = db.collection("users").document(userId);
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                            textView.setText("Xin chào "+document.getString("name")+"!");
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
 //            Uri photo = user.getPhotoUrl(); // avatar (nếu có)
         }
 

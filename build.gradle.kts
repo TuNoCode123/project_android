@@ -50,5 +50,5 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
     implementation("com.google.firebase:firebase-auth:22.3.0")
-
+    implementation ("com.google.firebase:firebase-firestore:24.9.0")
 }
