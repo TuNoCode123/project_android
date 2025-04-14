@@ -1,5 +1,6 @@
 package com.example.formular_cookie;
 
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,11 +10,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.bumptech.glide.Glide;
+
 
 import java.util.List;
 
@@ -66,15 +69,20 @@ public class RecipeDetailFragment extends Fragment {
                 btnDelete.setText("Hủy");
             }
             tvToolbarTitle.setText(recipe.getTitle());
-            tvIngredients.setText(recipe.getIngredients());
-            tvSteps.setText(recipe.getSteps());
 
-            if (recipe.getSelectedImageUri() != null) {
-                Uri imageUri = recipe.getSelectedImageUri();
-                ivImage.setImageURI(imageUri);
+
+            String imageUrl = recipe.getImageUrl();
+            Log.d("Recipe", "Image URL: " + imageUrl);
+
+            if (imageUrl != null && !imageUrl.isEmpty()) {
+                Glide.with(this)
+                        .load(imageUrl)
+                        .into(ivImage);
             } else {
-                ivImage.setImageResource(R.drawable.ic_launcher_foreground);
+                Log.d("recipe", "URL hình ảnh không hợp lệ hoặc null");
+                ivImage.setImageResource(R.drawable.ic_launcher_foreground); // Hình ảnh mặc định nếu URL null
             }
+
         }
 
         btnBack.setOnClickListener(v ->

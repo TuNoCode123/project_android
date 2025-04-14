@@ -25,11 +25,17 @@ import android.widget.Toast;
 
 import android.util.Log;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class PostRecipeFragment extends Fragment {
     private static final String TAG = "PostRecipeFragment";
     private EditText etTitle, etIngredients, etSteps;
     private ImageView ivPreview;
-    private Uri selectedImageUri;
+    private String imageUrl;
+    private String ingredients;
+    private String steps;
     private Bundle args;
     private Recipe recipe;
     private Boolean isEditMode;
@@ -68,11 +74,15 @@ public class PostRecipeFragment extends Fragment {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                        selectedImageUri = result.getData().getData();
-                        ivPreview.setImageURI(selectedImageUri);
+                        Uri uri = result.getData().getData();
+                        imageUrl = uri.toString(); // Cập nhật imageUrl
+                        Log.d(TAG, "Image URI: " + imageUrl); // Debug
+                        ivPreview.setImageURI(uri); // Hiển thị ảnh
                     }
                 }
         );
+
+
 
         args = getArguments();
         showRecipeInfoIfEdit();
@@ -92,17 +102,23 @@ public class PostRecipeFragment extends Fragment {
                 etTitle.setText(recipe.getTitle());
                 etIngredients.setText(recipe.getIngredients());
                 etSteps.setText(recipe.getSteps());
-                btnSubmit.setText("Lưu");
+                imageUrl = recipe.getImageUrl(); // Giữ lại ảnh cũ
 
-                if (recipe.getSelectedImageUri() != null) {
-                    selectedImageUri = recipe.getSelectedImageUri();
-                    ivPreview.setImageURI(selectedImageUri);
+                if (imageUrl != null && !imageUrl.isEmpty()) {
+                    Glide.with(this)
+                            .load(imageUrl)
+                            .into(ivPreview);
                 }
+
+                btnSubmit.setText("Lưu");
             }
         } else {
             Log.w(TAG, "Arguments bị null khi chuyển sang PostRecipeFragment");
         }
     }
+
+
+
 
     private void checkAndRequestPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -122,37 +138,53 @@ public class PostRecipeFragment extends Fragment {
         String ingredients = etIngredients.getText().toString().trim();
         String steps = etSteps.getText().toString().trim();
 
-        if (title.isEmpty() || ingredients.isEmpty() || steps.isEmpty() || selectedImageUri == null) {
-            Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, imageUrl);
+
+        if (title.isEmpty() || (!isEditMode && (imageUrl == null || imageUrl.isEmpty()))) {
+            Toast.makeText(getContext(), "Vui lòng nhập tiêu đề và chọn ảnh", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(isEditMode){
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("recipes");
+
+        if (isEditMode) {
             recipe.setTitle(title);
             recipe.setIngredients(ingredients);
             recipe.setSteps(steps);
-            recipe.setSelectedImageUri(selectedImageUri);
-            Log.d(TAG, "Chỉnh Sửa Công Thức");
-            Log.d(TAG, "Tên: " + title);
-            Log.d(TAG, "Nguyên liệu: " + ingredients);
-            Log.d(TAG, "Cách làm: " + steps);
-            Log.d(TAG, "Ảnh URI: " + selectedImageUri.toString());
-            //TODO: Lưu công thức đã chỉnh sửa vào database
-            Toast.makeText(getContext(), "Đã chỉnh sửa thức thành công!", Toast.LENGTH_SHORT).show();
-            requireActivity().getSupportFragmentManager().popBackStack();
-        }else{
-            Log.d(TAG, "Đăng công thức:");
-            Log.d(TAG, "Tên: " + title);
-            Log.d(TAG, "Nguyên liệu: " + ingredients);
-            Log.d(TAG, "Cách làm: " + steps);
-            Log.d(TAG, "Ảnh URI: " + selectedImageUri.toString());
-            //TODO: Thêm công thức mới vào database
-            Toast.makeText(getContext(), "Đã đăng công thức thành công!", Toast.LENGTH_SHORT).show();
+            recipe.setImageUrl(imageUrl);
+
+            dbRef.child(recipe.getId()).setValue(recipe)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(getContext(), "Đã chỉnh sửa công thức thành công!", Toast.LENGTH_SHORT).show();
+                        requireActivity().getSupportFragmentManager().popBackStack();
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(getContext(), "Lỗi: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+
+        } else {
+            String recipeId = dbRef.push().getKey();
+            Recipe newRecipe = new Recipe(title, imageUrl);
+            newRecipe.setId(recipeId);
+            newRecipe.setIngredients(ingredients);
+            newRecipe.setSteps(steps);
+
+            dbRef.child(recipeId).setValue(newRecipe)
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(getContext(), "Đăng công thức thành công!", Toast.LENGTH_SHORT).show();
+                        clearFields();
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(getContext(), "Lỗi lưu công thức: " + e.getMessage(), Toast.LENGTH_SHORT).show());
         }
+    }
+
+
+
+    private void clearFields() {
         etTitle.setText("");
         etIngredients.setText("");
         etSteps.setText("");
         ivPreview.setImageResource(R.drawable.ic_launcher_foreground);
-        selectedImageUri = null;
+        imageUrl=null;
     }
+
+
 }

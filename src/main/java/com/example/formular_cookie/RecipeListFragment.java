@@ -1,17 +1,23 @@
 package com.example.formular_cookie;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,6 +26,9 @@ import java.util.List;
 public class RecipeListFragment extends Fragment {
 
     private List<Recipe> recipeList;
+    private RecyclerView recyclerView;
+    private RecipeAdapter adapter;
+    private DatabaseReference databaseRef;
 
     @Nullable
     @Override
@@ -28,39 +37,53 @@ public class RecipeListFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
+        recyclerView = view.findViewById(R.id.rv_recipe_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        LinearLayout recipeContainer = view.findViewById(R.id.recipe_list_container);
+        recipeList = new ArrayList<>();
+        adapter = new RecipeAdapter(recipeList, this::openDetail);
+        recyclerView.setAdapter(adapter);
+        databaseRef = FirebaseDatabase.getInstance().getReference("recipes");
+        loadRecipesFromFirebase();
 
-        Bundle args = getArguments();
-        if(args != null){
-            for (Recipe recipe : recipeList = (List<Recipe>) args.getSerializable("recipeList")) {
-                View recipeItem = LayoutInflater.from(getContext())
-                        .inflate(R.layout.item_recipe_card, recipeContainer, false);
-
-                TextView title = recipeItem.findViewById(R.id.tv_recipe_title);
-                Button btn = recipeItem.findViewById(R.id.btn_view_detail);
-
-                title.setText(recipe.getTitle());
-
-                btn.setOnClickListener(v -> {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("recipe", recipe);
-                    bundle.putBoolean("isEditMode", true);
-                    bundle.putSerializable("recipeList", (Serializable) recipeList);
-                    RecipeDetailFragment detailFragment = new RecipeDetailFragment();
-                    detailFragment.setArguments(bundle);
-
-                    requireActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.admin_fragment_container, detailFragment)
-                            .addToBackStack(null)
-                            .commit();
-                });
-                recipeContainer.addView(recipeItem);
+        return view;
+    }
+    private void loadRecipesFromFirebase() {
+        databaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                recipeList.clear();
+                for (DataSnapshot recipeSnapshot : snapshot.getChildren()) {
+                    Recipe recipe = recipeSnapshot.getValue(Recipe.class);
+                    if (recipe != null) {
+                        recipe.setId(recipeSnapshot.getKey());
+                        recipeList.add(recipe);
+                    }
+                }
+                adapter.notifyDataSetChanged();
             }
 
-        }
-        return view;
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(getContext(), "Lỗi tải công thức: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void openDetail(Recipe recipe) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("recipe", recipe);
+        bundle.putBoolean("isEditMode", true);
+
+        RecipeDetailFragment detailFragment = new RecipeDetailFragment();
+        detailFragment.setArguments(bundle);
+
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.admin_fragment_container, detailFragment)
+                .addToBackStack(null)
+                .commit();
     }
 }
 

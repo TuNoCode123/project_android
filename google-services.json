@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "94020220768",
+    "firebase_url": "https://cook-c083f-default-rtdb.firebaseio.com",
+    "project_id": "cook-c083f",
+    "storage_bucket": "cook-c083f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:94020220768:android:ddcd41871ba6873de45005",
+        "android_client_info": {
+          "package_name": "com.example.formular_cookie"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFBwyL7u4O_mkNuLLO7jHR_DGQscrsY38"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
