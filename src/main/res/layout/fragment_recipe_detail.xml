@@ -10,16 +10,18 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="300dp"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleTextColor="@color/white"
+            app:titleCollapseMode="scale"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
@@ -37,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
@@ -45,6 +47,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -61,34 +64,25 @@
                 android:layout_marginBottom="16dp">
 
                 <TextView
-                    android:id="@+id/tv_ready_time"
+                    android:id="@+id/tv_author_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_time"
+                    android:drawableStart="@drawable/chef_avatar"
                     android:drawablePadding="8dp"
                     android:textSize="14sp"
-                    tools:text="Ready in 30 minutes" />
+                    android:gravity="center_vertical"
+                    tools:text="Unknown" />
 
                 <TextView
-                    android:id="@+id/tv_servings"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_servings"
-                    android:drawablePadding="8dp"
-                    android:textSize="14sp"
-                    tools:text="4 servings" />
-
-                <TextView
-                    android:id="@+id/tv_health_score"
+                    android:id="@+id/tv_followers"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawableStart="@drawable/ic_health"
                     android:drawablePadding="8dp"
                     android:textSize="14sp"
-                    tools:text="Health score: 85" />
+                    tools:text="1000 followers" />
             </LinearLayout>
 
             <TextView

@@ -4,30 +4,23 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Recipe implements Parcelable {
     private String id;
     private String title;
-    private String image;
-    private int readyInMinutes;
-    private int servings;
+    private String imageUrl;
     private String summary;
-    private String sourceUrl;
-    private String sourceName;
-    private int likes;
-    private double healthScore;
-    //TODO: Nên dùng List<Ingredient> ingredients
-    private String ingredients;
-    private List<Instruction> instructions;
+    private List<Ingredient> ingredients;
+    private List<String> steps;
     private String category;
+    private String authorID;
+    private Author author;
     private String authorImageUrl;
-    private int followers;
 
     public Recipe() {
 //        ingredients = new ArrayList<>();
-        instructions = new ArrayList<>();
+        steps = new ArrayList<>();
     }
 
     // Getters and setters
@@ -47,33 +40,14 @@ public class Recipe implements Parcelable {
         this.title = title;
     }
 
-    public String getImage() {
-        return image;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public String getFullImageUrl() {
-        return image;
-    }
-
-    public int getReadyInMinutes() {
-        return readyInMinutes;
-    }
-
-    public void setReadyInMinutes(int readyInMinutes) {
-        this.readyInMinutes = readyInMinutes;
-    }
-
-    public int getServings() {
-        return servings;
-    }
-
-    public void setServings(int servings) {
-        this.servings = servings;
-    }
 
     public String getSummary() {
         return summary;
@@ -83,58 +57,20 @@ public class Recipe implements Parcelable {
         this.summary = summary;
     }
 
-    public String getSourceUrl() {
-        return sourceUrl;
-    }
-
-    public void setSourceUrl(String sourceUrl) {
-        this.sourceUrl = sourceUrl;
-    }
-
-    public String getSourceName() {
-        return sourceName;
-    }
-
-    public void setSourceName(String sourceName) {
-        this.sourceName = sourceName;
-    }
-
-    public int getLikes() {
-        return likes;
-    }
-
-    public void setLikes(int likes) {
-        this.likes = likes;
-    }
-
-    public double getHealthScore() {
-        return healthScore;
-    }
-
-    public void setHealthScore(double healthScore) {
-        this.healthScore = healthScore;
-    }
-
-    public String getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public List<String> getIngredientsList() {
-        if (ingredients == null || ingredients.isEmpty()) {
-            return new ArrayList<>();
-        }
-        return Arrays.asList(ingredients.split(","));
-    }
-//    public void setIngredients(List<Ingredient> ingredients) {
-//        this.ingredients = ingredients;
-//    }
-
-    public List<Instruction> getInstructions() {
-        return instructions;
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
     }
 
-    public void setInstructions(List<Instruction> instructions) {
-        this.instructions = instructions;
+    public List<String> getSteps() {
+        return steps;
+    }
+
+    public void setSteps(List<String> steps) {
+        this.steps = steps;
     }
 
     public String getCategory() {
@@ -145,6 +81,29 @@ public class Recipe implements Parcelable {
         this.category = category;
     }
 
+    public String getAuthorID() {
+        return authorID;
+    }
+
+    public void setAuthorID(String authorID) {
+        this.authorID = authorID;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public String getAuthorName() {
+        if (author != null && author.getName() != null) {
+            return author.getName();
+        }
+        return "Unknown";
+    }
+
     public String getAuthorImageUrl() {
         return authorImageUrl;
     }
@@ -153,55 +112,36 @@ public class Recipe implements Parcelable {
         this.authorImageUrl = authorImageUrl;
     }
 
-    public int getFollowers() {
-        return followers;
-    }
-
-    public void setFollowers(int followers) {
-        this.followers = followers;
-    }
 
 
     // Parcelable implementation
     protected Recipe(Parcel in) {
         id = in.readString();
         title = in.readString();
-        image = in.readString();
-        readyInMinutes = in.readInt();
-        servings = in.readInt();
+        imageUrl = in.readString();
         summary = in.readString();
-        sourceUrl = in.readString();
-        sourceName = in.readString();
-        likes = in.readInt();
-        healthScore = in.readDouble();
         category = in.readString();
+        authorID = in.readString();
+        author = in.readParcelable(Author.class.getClassLoader());
         authorImageUrl = in.readString();
-        followers = in.readInt();
-//        ingredients = new ArrayList<>();
-//        in.readList(ingredients, Ingredient.class.getClassLoader());
-        ingredients = in.readString();
-        instructions = new ArrayList<>();
-        in.readList(instructions, Instruction.class.getClassLoader());
+        ingredients = new ArrayList<>();
+        in.readList(ingredients, Ingredient.class.getClassLoader());
+        steps = new ArrayList<>();
+        in.readStringList(steps);
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(title);
-        dest.writeString(image);
-        dest.writeInt(readyInMinutes);
-        dest.writeInt(servings);
+        dest.writeString(imageUrl);
         dest.writeString(summary);
-        dest.writeString(sourceUrl);
-        dest.writeString(sourceName);
-        dest.writeInt(likes);
-        dest.writeDouble(healthScore);
         dest.writeString(category);
+        dest.writeString(authorID);
+        dest.writeParcelable(author, flags);
         dest.writeString(authorImageUrl);
-        dest.writeInt(followers);
-//        dest.writeList(ingredients);
-        dest.writeString(ingredients);
-        dest.writeList(instructions);
+        dest.writeList(ingredients);
+        dest.writeList(steps);
     }
 
     @Override

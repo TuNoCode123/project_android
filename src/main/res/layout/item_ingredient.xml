@@ -11,38 +11,38 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp"
-        android:gravity="center_vertical">
+        android:padding="5dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="8dp">
 
-        <ImageView
-            android:id="@+id/iv_ingredient"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:scaleType="centerCrop"
-            tools:src="@tools:sample/avatars" />
-
-        <LinearLayout
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/tv_ingredient_name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_marginStart="16dp">
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="Ingredient Name" />
 
-            <TextView
-                android:id="@+id/tv_ingredient_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                tools:text="Ingredient Name" />
+        <TextView
+            android:id="@+id/tv_ingredient_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textSize="14sp"
+            tools:text="1.5" />
 
-            <TextView
-                android:id="@+id/tv_ingredient_amount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                tools:text="1.5 cups" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_ingredient_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:textSize="14sp"
+            tools:text="cups" />
+
+
+
     </LinearLayout>
+
 </androidx.cardview.widget.CardView>

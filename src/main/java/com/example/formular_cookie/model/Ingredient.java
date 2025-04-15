@@ -3,66 +3,74 @@ package com.example.formular_cookie.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
+import java.util.Map;
 
 public class Ingredient implements Parcelable {
-    @SerializedName("id")
-    private int id;
-
-    @SerializedName("name")
     private String name;
-
-//    @SerializedName("amount")
-//    private double amount;
-//
-//    @SerializedName("unit")
-//    private String unit;
-//
-//    @SerializedName("image")
-//    private String image;
+    private String amount;
+    private String unit;
 
     // Default constructor
     public Ingredient() {
     }
 
-    // Getters
-    public int getId() {
-        return id;
+    // Constructor with parameters
+    public Ingredient(String name, String amount, String unit) {
+        this.name = name;
+        this.amount = amount;
+        this.unit = unit;
     }
 
+    // Getters
     public String getName() {
         return name;
     }
 
-//    public double getAmount() {
-//        return amount;
-//    }
-//
-//    public String getUnit() {
-//        return unit;
-//    }
-//
-//    public String getImage() {
-//        return image;
-//    }
-//
+    public String getAmount() {
+        return amount;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+
+    // Setters
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    // Convert from Firestore Map to Ingredient object
+    public static Ingredient fromMap(Map<String, Object> map) {
+        Ingredient ingredient = new Ingredient();
+
+        if (map.containsKey("name")) ingredient.name = (String) map.get("name");
+        if (map.containsKey("amount")) ingredient.amount = String.valueOf(map.get("amount"));
+        if (map.containsKey("unit")) ingredient.unit = (String) map.get("unit");
+
+        return ingredient;
+    }
 
     // Parcelable implementation
     protected Ingredient(Parcel in) {
-        id = in.readInt();
         name = in.readString();
-//        amount = in.readDouble();
-//        unit = in.readString();
-//        image = in.readString();
+        amount = in.readString();
+        unit = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
         dest.writeString(name);
-//        dest.writeDouble(amount);
-//        dest.writeString(unit);
-//        dest.writeString(image);
+        dest.writeString(amount);
+        dest.writeString(unit);
     }
 
     @Override
@@ -82,3 +90,4 @@ public class Ingredient implements Parcelable {
         }
     };
 }
+

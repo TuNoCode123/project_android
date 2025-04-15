@@ -1,7 +1,7 @@
 package com.example.formular_cookie.fragment;
 
 import android.os.Bundle;
-import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +31,7 @@ public class RecipeDetailFragment extends Fragment {
     private static final String ARG_RECIPE = "recipe";
 
     private ImageView ivRecipeImage;
-    private TextView tvSummary, tvReadyTime, tvServings, tvHealthScore;
-    private RecyclerView rvIngredients, rvInstructions;
+    private TextView tvSummary, tvAuthorName;
     private ProgressBar progressBar;
     private CollapsingToolbarLayout collapsingToolbar;
     private Toolbar toolbar;
@@ -42,6 +41,7 @@ public class RecipeDetailFragment extends Fragment {
 
     private Recipe recipe;
     private FirebaseRecipeRepository recipeRepository;
+    private boolean isFullyLoaded = false;
 
     public static RecipeDetailFragment newInstance(Recipe recipe) {
         RecipeDetailFragment fragment = new RecipeDetailFragment();
@@ -57,10 +57,24 @@ public class RecipeDetailFragment extends Fragment {
 
         if (getArguments() != null) {
             recipe = getArguments().getParcelable(ARG_RECIPE);
+        }else if (savedInstanceState != null) {
+            // Khôi phục từ savedInstanceState nếu có
+            recipe = savedInstanceState.getParcelable(ARG_RECIPE);
+            isFullyLoaded = savedInstanceState.getBoolean("isFullyLoaded", false);
         }
 
         // Khởi tạo FirebaseRecipeRepository
         recipeRepository = FirebaseRecipeRepository.getInstance(requireContext());
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Lưu trạng thái
+        if (recipe != null) {
+            outState.putParcelable(ARG_RECIPE, recipe);
+        }
+        outState.putBoolean("isFullyLoaded", isFullyLoaded);
     }
 
     @Nullable
@@ -75,8 +89,8 @@ public class RecipeDetailFragment extends Fragment {
             displayBasicRecipeInfo();
 
             // Lấy thông tin chi tiết công thức nếu chưa có
-            if (recipe.getIngredients() == null || recipe.getIngredients().isEmpty() ||
-                    recipe.getInstructions() == null || recipe.getInstructions().isEmpty()) {
+            if (!isFullyLoaded && (recipe.getIngredients() == null || recipe.getIngredients().isEmpty() ||
+                    recipe.getSteps() == null || recipe.getSteps().isEmpty())) {
                 fetchRecipeDetails(recipe.getId());
             }
         } else {
@@ -91,13 +105,11 @@ public class RecipeDetailFragment extends Fragment {
         collapsingToolbar = view.findViewById(R.id.collapsing_toolbar);
         toolbar = view.findViewById(R.id.toolbar);
         ivRecipeImage = view.findViewById(R.id.iv_recipe_image);
+        tvAuthorName = view.findViewById(R.id.tv_author_name);
         tvSummary = view.findViewById(R.id.tv_summary);
-        tvReadyTime = view.findViewById(R.id.tv_ready_time);
-        tvServings = view.findViewById(R.id.tv_servings);
-        tvHealthScore = view.findViewById(R.id.tv_health_score);
-        rvIngredients = view.findViewById(R.id.rv_ingredients);
-        rvInstructions = view.findViewById(R.id.rv_instructions);
         progressBar = view.findViewById(R.id.progress_bar);
+        RecyclerView rvIngredients = view.findViewById(R.id.rv_ingredients);
+        RecyclerView rvInstructions = view.findViewById(R.id.rv_instructions);
 
         rvIngredients.setLayoutManager(new LinearLayoutManager(requireContext()));
         rvInstructions.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -122,38 +134,30 @@ public class RecipeDetailFragment extends Fragment {
 
         // Tải hình ảnh công thức
         Glide.with(this)
-                .load(recipe.getFullImageUrl())
+                .load(recipe.getImageUrl())
                 .placeholder(R.drawable.placeholder_image)
                 .error(R.drawable.error_image)
                 .centerCrop()
                 .into(ivRecipeImage);
 
         // Set thông tin cơ bản
-        if (recipe.getReadyInMinutes() > 0) {
-            tvReadyTime.setText("Ready in " + recipe.getReadyInMinutes() + " minutes");
+        // Set tên tác giả nếu có
+        if (recipe.getAuthorID() != null && !recipe.getAuthorID().isEmpty()) {
+            tvAuthorName.setText(recipe.getAuthorName());
         }
-
-        if (recipe.getServings() > 0) {
-            tvServings.setText(recipe.getServings() + " servings");
-        }
-
-        if (recipe.getHealthScore() > 0) {
-            tvHealthScore.setText("Health score: " + recipe.getHealthScore());
-        }
-
         // Set tóm tắt công thức nếu có
         if (recipe.getSummary() != null && !recipe.getSummary().isEmpty()) {
-            tvSummary.setText(Html.fromHtml(recipe.getSummary()));
+            tvSummary.setText(recipe.getSummary());
         }
 
         // Set nguyên liệu nếu có
-//        if (recipe.getIngredients() != null && !recipe.getIngredients().isEmpty()) {
-//            ingredientsAdapter.updateData(recipe.getIngredients());
-//        }
+        if (recipe.getIngredients() != null && !recipe.getIngredients().isEmpty()) {
+            ingredientsAdapter.updateData(recipe.getIngredients());
+        }
 
         // Set hướng dẫn nếu có
-        if (recipe.getInstructions() != null && !recipe.getInstructions().isEmpty()) {
-            instructionsAdapter.updateData(recipe.getInstructions());
+        if (recipe.getSteps() != null && !recipe.getSteps().isEmpty()) {
+            instructionsAdapter.updateData(recipe.getSteps());
         }
     }
 
@@ -167,6 +171,7 @@ public class RecipeDetailFragment extends Fragment {
 
                 progressBar.setVisibility(View.GONE);
                 recipe = loadedRecipe;
+                isFullyLoaded = true;
                 displayBasicRecipeInfo();
             }
 

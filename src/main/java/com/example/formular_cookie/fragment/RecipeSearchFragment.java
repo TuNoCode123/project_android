@@ -26,6 +26,7 @@ import com.example.formular_cookie.repository.FirebaseRecipeRepository;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRecipeClickListener {
@@ -43,7 +44,8 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
 
     private String currentQuery = "";
     private boolean isLoading = false;
-
+    private List<Recipe> currentRecipes = new ArrayList<>();
+    private int selectedChipId = View.NO_ID;
     public interface OnRecipeSelectedListener {
         void onRecipeSelected(Recipe recipe);
     }
@@ -72,11 +74,33 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
         initViews(view);
         setupRecyclerView();
         setupListeners();
+        // Khôi phục trạng thái nếu có
+        if (savedInstanceState != null) {
+            currentQuery = savedInstanceState.getString("currentQuery", "");
+            selectedChipId = savedInstanceState.getInt("selectedChipId", View.NO_ID);
 
-        tvNoResults.setVisibility(View.VISIBLE);
-        tvNoResults.setText(R.string.search_prompt);
+            // Khôi phục trạng thái tìm kiếm
+            if (!currentQuery.isEmpty()) {
+                etSearch.setText(currentQuery);
+                searchRecipes();
+            } else if (selectedChipId != View.NO_ID) {
+                chipGroup.check(selectedChipId);
+            }
+        } else {
+            // Show search prompt nếu không có trạng thái được lưu
+            tvNoResults.setVisibility(View.VISIBLE);
+            tvNoResults.setText(R.string.search_prompt);
+        }
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Lưu trạng thái tìm kiếm hiện tại
+        outState.putString("currentQuery", currentQuery);
+        outState.putInt("selectedChipId", selectedChipId);
     }
 
     private void initViews(View view) {
@@ -96,6 +120,12 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
         final GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 2);
         rvRecipes.setLayoutManager(layoutManager);
         rvRecipes.setAdapter(recipeAdapter);
+
+        // Khôi phục dữ liệu nếu có
+        if (!currentRecipes.isEmpty()) {
+            recipeAdapter.updateData(currentRecipes);
+            tvNoResults.setVisibility(View.GONE);
+        }
     }
 
     private void setupListeners() {
@@ -122,6 +152,7 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
                         } else {
                             // Xóa kết quả nếu không có gì được nhập
                             recipeAdapter.clearData();
+                            currentRecipes.clear();
                             tvNoResults.setVisibility(View.VISIBLE);
                             tvNoResults.setText(R.string.search_prompt);
                         }
@@ -138,12 +169,15 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
         btnClear.setOnClickListener(v -> {
             etSearch.setText("");
             currentQuery = "";
+            currentRecipes.clear();
             recipeAdapter.clearData();
             tvNoResults.setVisibility(View.VISIBLE);
             tvNoResults.setText(R.string.search_prompt);
         });
 
         chipGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            selectedChipId = checkedId;
+
             if (checkedId == View.NO_ID) {
                 // No chip selected
                 // currentCategory = "";
@@ -163,6 +197,7 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
         // Không thực hiện tìm kiếm nếu query trống
         if (currentQuery.isEmpty()) {
             recipeAdapter.clearData();
+            currentRecipes.clear();
             tvNoResults.setVisibility(View.VISIBLE);
             tvNoResults.setText(R.string.search_prompt);
             return;
@@ -193,6 +228,8 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
     }
 
     private void updateRecipeList(List<Recipe> recipes) {
+        currentRecipes.clear();
+        currentRecipes.addAll(recipes);
         recipeAdapter.updateData(recipes);
 
         if (recipes.isEmpty()) {
@@ -211,6 +248,7 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
         }
     }
 
+
     @Override
     public void onRecipeClick(Recipe recipe, int position) {
         callback.onRecipeSelected(recipe);
@@ -221,4 +259,20 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
         super.onDetach();
         callback = null;
     }
+    // Phương thức để khôi phục trạng thái tìm kiếm
+    public void restoreSearchState() {
+        if (!currentQuery.isEmpty()) {
+            etSearch.setText(currentQuery);
+            if (!currentRecipes.isEmpty()) {
+                recipeAdapter.updateData(currentRecipes);
+                tvNoResults.setVisibility(View.GONE);
+            } else {
+                searchRecipes();
+            }
+        } else if (selectedChipId != View.NO_ID) {
+            chipGroup.check(selectedChipId);
+        }
+    }
+
+
 }

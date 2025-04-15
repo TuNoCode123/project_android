@@ -1,17 +1,21 @@
 package com.example.formular_cookie.repository;
 
+
 import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.formular_cookie.helper.RecipeDbHelper;
+import com.example.formular_cookie.model.Author;
+import com.example.formular_cookie.model.Ingredient;
 import com.example.formular_cookie.model.Recipe;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,9 +24,12 @@ import java.util.Map;
 
 public class FirebaseRecipeRepository {
     private static final String TAG = "FirebaseRecipeRepo";
-    private static final String RECIPES_REF = "recipes";
+    private static final String RECIPES_COLLECTION = "recipes";
+    private static final String USERS_COLLECTION = "users";
 
-    private final DatabaseReference databaseRef;
+    private final FirebaseFirestore db;
+    private final CollectionReference recipesCollection;
+    private final CollectionReference usersCollection;
     private final RecipeDbHelper dbHelper;
     private boolean recipeNamesLoaded = false;
 
@@ -37,18 +44,20 @@ public class FirebaseRecipeRepository {
     }
 
     private FirebaseRecipeRepository(Context context) {
-        databaseRef = FirebaseDatabase.getInstance().getReference();
+        db = FirebaseFirestore.getInstance();
+        recipesCollection = db.collection(RECIPES_COLLECTION);
+        usersCollection = db.collection(USERS_COLLECTION);
         dbHelper = RecipeDbHelper.getInstance(context);
     }
 
-    // Check xem recipe names đã được tải về chưa
+    // Check if recipe names are already loaded
     public boolean areRecipeNamesLoaded() {
         return recipeNamesLoaded;
     }
 
-    // Lấy tên recipe từ Firebase và lưu vào SQLite
+    // Fetch all recipe names and store them locally
     public void fetchAndStoreRecipeNames(final OnRecipeNamesLoadedListener listener) {
-        // Bỏ qua nếu đã tải về trước đó
+        // Skip if already loaded
         if (recipeNamesLoaded) {
             if (listener != null) {
                 listener.onRecipeNamesLoaded(0); // We don't know the count anymore
@@ -56,42 +65,39 @@ public class FirebaseRecipeRepository {
             return;
         }
 
-        databaseRef.child(RECIPES_REF).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        recipesCollection.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
                 Map<String, String> recipeNames = new HashMap<>();
 
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String id = snapshot.getKey();
-                    String title = snapshot.child("title").getValue(String.class);
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    String id = document.getId();
+                    String title = document.getString("title");
 
                     if (title != null) {
                         recipeNames.put(id, title);
                     }
                 }
 
-                // Lưu tên recipe vào SQLite
+                // Lưu tên công thức vào SQLite
                 dbHelper.insertRecipeNames(recipeNames);
                 recipeNamesLoaded = true;
 
                 if (listener != null) {
                     listener.onRecipeNamesLoaded(recipeNames.size());
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "Error fetching recipe names: " + databaseError.getMessage());
+            } else {
+                Log.e(TAG, "Error fetching recipe names: ", task.getException());
                 if (listener != null) {
-                    listener.onError(databaseError.getMessage());
+                    listener.onError(task.getException() != null ?
+                            task.getException().getMessage() : "Unknown error");
                 }
             }
         });
     }
 
-    // Tìm tên recipe trên SQLite trước, sau đó lấy chi tiết từ Firebase
+    // Tìm tên trong SQLite trước, sau đó lấy chi tiết từ Firestore
     public void searchRecipes(String query, final OnRecipesLoadedListener listener) {
-        // Tìm trên SQLite trước
+        // Tìm kiếm trong SQLite trước
         List<String> recipeIds = dbHelper.searchRecipeIds(query);
 
         if (recipeIds.isEmpty()) {
@@ -101,39 +107,59 @@ public class FirebaseRecipeRepository {
             return;
         }
 
-        // Lấy chi tiết recipe từ Firebase
+        // Lấy full thông tin công thức từ Firestore
         fetchRecipesByIds(recipeIds, listener);
     }
 
-    // Lấy chi tiết recipe từ Firebase theo danh sách ID
+    // Lấy nhiều công thức theo danh sách ID
     private void fetchRecipesByIds(List<String> recipeIds, final OnRecipesLoadedListener listener) {
         final List<Recipe> recipes = new ArrayList<>();
         final int[] completedQueries = {0};
         final int totalQueries = recipeIds.size();
 
         for (String recipeId : recipeIds) {
-            databaseRef.child(RECIPES_REF).child(recipeId).addListenerForSingleValueEvent(new ValueEventListener() {
+            recipesCollection.document(recipeId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        Recipe recipe = dataSnapshot.getValue(Recipe.class);
-                        if (recipe != null) {
-                            recipe.setId(dataSnapshot.getKey());
-                            recipes.add(recipe);
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Recipe recipe = convertDocumentToRecipe(document);
+                            if (recipe != null) {
+                                // Lấy thông tin tác giả nếu có authorID
+                                if (recipe.getAuthorID() != null && !recipe.getAuthorID().isEmpty()) {
+                                    fetchAuthorForRecipe(recipe, new OnAuthorLoadedListener() {
+                                        @Override
+                                        public void onAuthorLoaded(Author author) {
+                                            recipe.setAuthor(author);
+                                            recipes.add(recipe);
+                                            checkCompletion();
+                                        }
+
+                                        @Override
+                                        public void onError(String errorMessage) {
+                                            // Vẫn thêm công thức ngay cả khi không lấy được thông tin tác giả
+                                            recipes.add(recipe);
+                                            checkCompletion();
+                                        }
+                                    });
+                                } else {
+                                    recipes.add(recipe);
+                                    checkCompletion();
+                                }
+                            } else {
+                                checkCompletion();
+                            }
+                        } else {
+                            checkCompletion();
                         }
-                    }
-
-                    completedQueries[0]++;
-
-                    // Kiểm tra xem tất cả các truy vấn đã hoàn thành chưa
-                    if (completedQueries[0] >= totalQueries && listener != null) {
-                        listener.onRecipesLoaded(recipes);
+                    } else {
+                        Log.e(TAG, "Error fetching recipe: ", task.getException());
+                        checkCompletion();
                     }
                 }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Log.e(TAG, "Error fetching recipe: " + databaseError.getMessage());
+                private void checkCompletion() {
                     completedQueries[0]++;
 
                     // Check if all queries are completed
@@ -145,41 +171,116 @@ public class FirebaseRecipeRepository {
         }
     }
 
-    // Lấy chi tiết recipe theo ID
+    // Lấy một công thức theo ID
     public void getRecipeById(String recipeId, final OnRecipeLoadedListener listener) {
-        databaseRef.child(RECIPES_REF).child(recipeId).addListenerForSingleValueEvent(new ValueEventListener() {
+        recipesCollection.document(recipeId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    Recipe recipe = dataSnapshot.getValue(Recipe.class);
-                    if (recipe != null) {
-                        recipe.setId(dataSnapshot.getKey());
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Recipe recipe = convertDocumentToRecipe(document);
+                        if (recipe != null) {
+                            // Lấy thông tin tác giả nếu có authorID
+                            if (recipe.getAuthorID() != null && !recipe.getAuthorID().isEmpty()) {
+                                fetchAuthorForRecipe(recipe, new OnAuthorLoadedListener() {
+                                    @Override
+                                    public void onAuthorLoaded(Author author) {
+                                        recipe.setAuthor(author);
+                                        if (listener != null) {
+                                            listener.onRecipeLoaded(recipe);
+                                        }
+                                    }
 
-                        if (listener != null) {
-                            listener.onRecipeLoaded(recipe);
-                        }
-                    } else {
-                        if (listener != null) {
+                                    @Override
+                                    public void onError(String errorMessage) {
+                                        // Vẫn trả về công thức ngay cả khi không lấy được thông tin tác giả
+                                        if (listener != null) {
+                                            listener.onRecipeLoaded(recipe);
+                                        }
+                                    }
+                                });
+                            } else if (listener != null) {
+                                listener.onRecipeLoaded(recipe);
+                            }
+                        } else if (listener != null) {
                             listener.onError("Failed to parse recipe data");
                         }
-                    }
-                } else {
-                    if (listener != null) {
+                    } else if (listener != null) {
                         listener.onError("Recipe not found");
                     }
+                } else if (listener != null) {
+                    listener.onError(task.getException() != null ?
+                            task.getException().getMessage() : "Unknown error");
                 }
             }
+        });
+    }
+    // Lấy thông tin tác giả cho một công thức
+    private void fetchAuthorForRecipe(Recipe recipe, final OnAuthorLoadedListener listener) {
+        String authorId = recipe.getAuthorID();
 
+        usersCollection.document(authorId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "Error fetching recipe: " + databaseError.getMessage());
-                if (listener != null) {
-                    listener.onError(databaseError.getMessage());
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Map<String, Object> data = document.getData();
+                        if (data != null) {
+                            Author author = Author.fromMap(authorId, data);
+                            if (listener != null) {
+                                listener.onAuthorLoaded(author);
+                            }
+                        } else if (listener != null) {
+                            listener.onError("Author data is null");
+                        }
+                    } else if (listener != null) {
+                        listener.onError("Author not found");
+                    }
+                } else if (listener != null) {
+                    listener.onError(task.getException() != null ?
+                            task.getException().getMessage() : "Unknown error");
                 }
             }
         });
     }
 
+    // Helper method chuyển DocumentSnapshot thành Recipe
+    private Recipe convertDocumentToRecipe(DocumentSnapshot document) {
+        Recipe recipe = new Recipe();
+
+        recipe.setId(document.getId());
+        recipe.setTitle(document.getString("title"));
+        recipe.setImageUrl(document.getString("imageUrl"));
+        recipe.setAuthorID(document.getString("authorID"));
+        recipe.setSummary(document.getString("description"));
+
+        Log.d(TAG, "Recipe ID: " + document.getString("description"));
+//        recipe.setCategory(document.getString("category"));
+//        recipe.setAuthorImageUrl(document.getString("authorImageUrl"));
+
+        // lấy ds nguyên liệu
+        List<Map<String, Object>> ingredientsList = (List<Map<String, Object>>) document.get("ingredients");
+        if (ingredientsList != null) {
+            List<Ingredient> ingredients = new ArrayList<>();
+            for (Map<String, Object> ingredientMap : ingredientsList) {
+                Ingredient ingredient = Ingredient.fromMap(ingredientMap);
+                ingredients.add(ingredient);
+            }
+            recipe.setIngredients(ingredients);
+        }
+
+        // Lấy ds hướng dẫn
+        List<String> steps = (List<String>) document.get("steps");
+        if (steps != null) {
+            recipe.setSteps(steps);
+        }
+
+        return recipe;
+    }
+
+    // Callback interfaces
     public interface OnRecipeNamesLoadedListener {
         void onRecipeNamesLoaded(int count);
         void onError(String errorMessage);
@@ -192,6 +293,11 @@ public class FirebaseRecipeRepository {
 
     public interface OnRecipeLoadedListener {
         void onRecipeLoaded(Recipe recipe);
+        void onError(String errorMessage);
+    }
+
+    public interface OnAuthorLoadedListener {
+        void onAuthorLoaded(Author author);
         void onError(String errorMessage);
     }
 }

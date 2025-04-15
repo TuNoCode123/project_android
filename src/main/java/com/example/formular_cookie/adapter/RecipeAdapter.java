@@ -58,35 +58,21 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
         holder.tvRecipeTitle.setText(recipe.getTitle());
 
-        // Format ready time as "Ready in X minutes"
-        String readyTime = "Ready in " + recipe.getReadyInMinutes() + " min";
-        holder.tvTime.setText(readyTime);
-
-        // Format likes
-        holder.tvLikes.setText(formatNumber(recipe.getLikes()));
-
-        // Set source name as author
-        if (recipe.getSourceName() != null && !recipe.getSourceName().isEmpty()) {
-            holder.tvAuthorName.setText(recipe.getSourceName());
-        } else {
-            holder.tvAuthorName.setText("Unknown");
-        }
-
+        holder.tvAuthorName.setText(recipe.getAuthorName());
         // Set followers if available, otherwise show category
-//        if (recipe.getFollowers() > 0) {
-//            holder.tvFollowers.setText(formatNumber(recipe.getFollowers()) + " Followers");
-//        } else if (recipe.getCategory() != null && !recipe.getCategory().isEmpty()) {
-//            holder.tvFollowers.setText(recipe.getCategory());
-//        } else {
-//            holder.tvFollowers.setText("Recipe");
-//        }
+//       if (recipe.getAuthorFollowers() > 0) {
+//           holder.tvFollowers.setText(formatNumber(recipe.getAuthorFollowers()) + " Followers");
+//       } else if (recipe.getCategory() != null && !recipe.getCategory().isEmpty()) {
+//           holder.tvFollowers.setText(recipe.getCategory());
+//       } else {
+//           holder.tvFollowers.setText("Recipe");
+//       }
 
-        Log.d("RecipeAdapter", "Recipe image URL: " + recipe.getFullImageUrl());
         // Tải ảnh công thức
         holder.progressImage.setVisibility(View.VISIBLE);
 
         Glide.with(context)
-                .load(recipe.getFullImageUrl())
+                .load(recipe.getImageUrl())
                 .placeholder(R.drawable.placeholder_image)
                 .error(R.drawable.error_image)
                 .listener(new RequestListener<>() {
