@@ -8,8 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <!-- Tên công thức -->
         <EditText
@@ -40,24 +39,75 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp" />
 
-        <!-- Nguyên liệu -->
-        <EditText
-            android:id="@+id/et_recipe_ingredients"
+        <!-- Tiêu đề "Mô tả công thức" -->
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nguyên liệu"
-            android:inputType="textMultiLine"
-            android:minLines="3"
-            android:layout_marginBottom="12dp" />
+            android:text="Mô tả công thức"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
 
-        <!-- Mô tả cách làm -->
+        <!-- Trường mô tả -->
         <EditText
-            android:id="@+id/et_recipe_steps"
+            android:id="@+id/et_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Mô tả cách làm"
+            android:hint="Mô tả công thức"
             android:inputType="textMultiLine"
-            android:minLines="4"
+            android:layout_marginBottom="16dp"
+            android:gravity="top|start" />
+
+        <!-- Tiêu đề "Nguyên liệu" -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nguyên liệu"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Danh sách nguyên liệu -->
+        <LinearLayout
+            android:id="@+id/ingredients_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Nút thêm nguyên liệu -->
+        <Button
+            android:id="@+id/btn_add_ingredient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+ Thêm nguyên liệu"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Tiêu đề "Các bước thực hiện" -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Các bước thực hiện"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Danh sách bước thực hiện -->
+        <LinearLayout
+            android:id="@+id/steps_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Nút thêm bước -->
+        <Button
+            android:id="@+id/btn_add_step"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+ Thêm bước"
+            android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp" />
 
         <!-- Nút đăng -->

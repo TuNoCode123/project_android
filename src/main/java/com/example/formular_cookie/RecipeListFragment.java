@@ -5,21 +5,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.io.Serializable;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +21,8 @@ public class RecipeListFragment extends Fragment {
     private List<Recipe> recipeList;
     private RecyclerView recyclerView;
     private RecipeAdapter adapter;
-    private DatabaseReference databaseRef;
+    private TextView tvEmptyList;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();;
 
     @Nullable
     @Override
@@ -38,37 +32,56 @@ public class RecipeListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
         recyclerView = view.findViewById(R.id.rv_recipe_list);
+        tvEmptyList = view.findViewById(R.id.tv_empty_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         recipeList = new ArrayList<>();
         adapter = new RecipeAdapter(recipeList, this::openDetail);
         recyclerView.setAdapter(adapter);
-        databaseRef = FirebaseDatabase.getInstance().getReference("recipes");
         loadRecipesFromFirebase();
 
         return view;
     }
     private void loadRecipesFromFirebase() {
-        databaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                recipeList.clear();
-                for (DataSnapshot recipeSnapshot : snapshot.getChildren()) {
-                    Recipe recipe = recipeSnapshot.getValue(Recipe.class);
-                    if (recipe != null) {
-                        recipe.setId(recipeSnapshot.getKey());
+        db.collection("recipes")
+                .whereEqualTo("status", true) // lọc theo status = true
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    recipeList.clear(); // clear danh sách cũ trước khi thêm mới
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        Recipe recipe = doc.toObject(Recipe.class);
+                        recipe.setId(doc.getId());
                         recipeList.add(recipe);
-                    }
-                }
-                adapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getContext(), "Lỗi tải công thức: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+                        List<Ingredient> ingredients = recipe.getIngredients();
+                        if (ingredients != null) {
+                            for (Ingredient ingredient : ingredients) {
+                                Log.d("RECIPE", "Ingredient - Name: " + ingredient.getName() +
+                                        ", Amount: " + ingredient.getAmount() +
+                                        ", Unit: " + ingredient.getUnit());
+                            }
+                        }
+
+                        Log.d("RECIPE", "Thêm: " + recipe.getTitle());
+                    }
+
+                    adapter.notifyDataSetChanged();
+
+                    // Kiểm tra danh sách rỗng
+                    if (recipeList.isEmpty()) {
+                        tvEmptyList.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
+                    } else {
+                        tvEmptyList.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
+
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("RECIPE", "Lỗi khi đọc dữ liệu", e);
+                });
     }
+
 
 
     private void openDetail(Recipe recipe) {
