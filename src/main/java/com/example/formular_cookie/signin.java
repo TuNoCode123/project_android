@@ -103,7 +103,7 @@ public class signin extends Fragment {
                                                         Toast.makeText(getContext(), "Lưu thông tin người dùng thất bại", Toast.LENGTH_SHORT).show();
                                                     }
                                                 });
-                                    }
+                                        }
                                 } else {
                                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                     Toast.makeText(getContext(), "Đăng ký thất bại: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
