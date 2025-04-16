@@ -15,7 +15,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import android.widget.Toast;
 import android.util.Log;
 import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.DocumentReference;

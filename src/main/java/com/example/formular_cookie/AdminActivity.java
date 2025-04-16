@@ -10,6 +10,7 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class AdminActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
+    private Fragment currentFragment;
 
 
     @Override
@@ -17,6 +18,15 @@ public class AdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin);
         bottomNavigationView = findViewById(R.id.admin_nav_view);
+
+        if (savedInstanceState != null) {
+            currentFragment = getSupportFragmentManager().getFragment(savedInstanceState, "current_fragment");
+        }
+
+        if (currentFragment == null) {
+            // Nếu không có fragment nào được lưu, khởi tạo một fragment mặc định
+            currentFragment = new ApproveRecipesFragment();
+        }
         setupBottomNavigation();
     }
     private void setupBottomNavigation() {
@@ -34,8 +44,11 @@ public class AdminActivity extends AppCompatActivity {
                     fragment = new RecipeListFragment();
                 } else if (itemId == R.id.nav_account) {
                     fragment = new AccountFragment();
+                } else if (itemId == R.id.nav_manage_users) {
+                    fragment = new UserFragment();
                 }
                 if (fragment != null) {
+                    currentFragment = fragment;
                     getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.admin_fragment_container, fragment)
@@ -47,7 +60,16 @@ public class AdminActivity extends AppCompatActivity {
                 return false;
             }
         });
-        bottomNavigationView.setSelectedItemId(R.id.nav_recipe_list);
+        bottomNavigationView.setSelectedItemId(R.id.nav_approve_recipes);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Lưu lại fragment hiện tại
+        if (currentFragment != null) {
+            getSupportFragmentManager().putFragment(outState, "current_fragment", currentFragment);
+        }
     }
 
 }

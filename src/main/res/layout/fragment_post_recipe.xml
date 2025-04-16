@@ -15,7 +15,7 @@
             android:id="@+id/et_recipe_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Tên công thức"
+            android:hint="@string/hint_recipe_name"
             android:inputType="textPersonName"
             android:layout_marginBottom="12dp" />
 
@@ -35,7 +35,7 @@
             android:id="@+id/btn_pick_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chọn ảnh minh họa"
+            android:text="@string/text_select_image"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp" />
 
@@ -43,7 +43,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mô tả công thức"
+            android:text="@string/recipe_description"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
@@ -53,7 +53,7 @@
             android:id="@+id/et_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Mô tả công thức"
+            android:hint="@string/recipe_description"
             android:inputType="textMultiLine"
             android:layout_marginBottom="16dp"
             android:gravity="top|start" />
@@ -62,7 +62,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nguyên liệu"
+            android:text="@string/text_ingredients"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
@@ -80,7 +80,7 @@
             android:id="@+id/btn_add_ingredient"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+ Thêm nguyên liệu"
+            android:text="@string/text_add_ingredient"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp" />
 
@@ -88,7 +88,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Các bước thực hiện"
+            android:text="@string/text_steps"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
@@ -106,7 +106,7 @@
             android:id="@+id/btn_add_step"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+ Thêm bước"
+            android:text="@string/text_add_step"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="20dp" />
 
@@ -115,7 +115,7 @@
             android:id="@+id/btn_submit_recipe"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Đăng Công Thức"
+            android:text="@string/text_post_recipe"
             android:layout_gravity="center_horizontal"
             android:padding="12dp" />
     </LinearLayout>

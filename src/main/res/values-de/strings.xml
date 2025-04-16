@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Food App</string>
+    <string name="navigation_drawer_open">Menü öffnen</string>
+    <string name="navigation_drawer_close">Menü schließen</string>
+    <string name="title_approve">Genehmigen</string>
+    <string name="title_post">Veröffentlichen</string>
+    <string name="title_list">Rezepte</string>
+    <string name="title_users">Benutzer</string>
+    <string name="title_account">Konto</string>
+    <string name="title_logout">Abmelden</string>
+    <string name="hint_recipe_name">Rezeptname</string>
+    <string name="text_select_image">Bild auswählen</string>
+    <string name="recipe_description">Rezeptbeschreibung</string>
+    <string name="text_ingredients">Zutaten</string>
+    <string name="text_add_ingredient">+ Zutat hinzufügen</string>
+    <string name="text_steps">Schritte</string>
+    <string name="text_add_step">+ Schritt hinzufügen</string>
+    <string name="text_post_recipe">Rezept veröffentlichen</string>
+    <string name="text_delete">Löschen</string>
+    <string name="text_edit">Bearbeiten</string>
+    <string name="text_confirm">Bestätigen</string>
+    <string name="text_cancel">Abbrechen</string>
+    <string name="text_empty_list">Liste ist leer</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_quantity">Menge</string>
+    <string name="hint_unit">Einheit</string>
+    <string name="text_view_details">Details anzeigen</string>
+    <string name="hint_step_description">Schrittbeschreibung</string>
+</resources>

@@ -20,7 +20,7 @@
         android:id="@+id/tv_empty_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Danh sách rỗng"
+        android:text="@string/text_empty_list"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="#888888"

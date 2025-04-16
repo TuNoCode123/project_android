@@ -67,7 +67,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Mô tả công thức"
+                android:text="@string/recipe_description"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="12dp" />
@@ -76,13 +76,13 @@
                 android:id="@+id/tv_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Mô tả công thức"
+                android:text="@string/recipe_description"
                 android:layout_marginBottom="8dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nguyên liệu:"
+                android:text="@string/text_ingredients"
                 android:textStyle="bold" />
 
             <!-- LinearLayout cho ingredients -->
@@ -96,7 +96,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cách làm:"
+                android:text="@string/text_steps"
                 android:textStyle="bold" />
 
             <!-- LinearLayout cho steps -->

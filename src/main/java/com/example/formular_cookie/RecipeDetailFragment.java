@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -135,11 +134,11 @@ public class RecipeDetailFragment extends Fragment {
             isApproveMode = args.getBoolean("isApproveMode", false);
             recipeList = (List<Recipe>) args.getSerializable("recipeList");
             if (isEditMode) {
-                btnEdit.setText("Chỉnh Sửa");
-                btnDelete.setText("Xóa");
+                btnEdit.setText(getString(R.string.text_edit));
+                btnDelete.setText(getString(R.string.text_delete));
             } else if(isApproveMode) {
-                btnEdit.setText("Xác Nhận");
-                btnDelete.setText("Hủy");
+                btnEdit.setText(getString(R.string.text_confirm));
+                btnDelete.setText(getString(R.string.text_cancel));
             }
             tvToolbarTitle.setText(recipe.getTitle());
             tvDescription.setText(recipe.getDescription());
@@ -188,14 +187,9 @@ public class RecipeDetailFragment extends Fragment {
 
         btnEdit.setOnClickListener(v -> {
             if (recipe != null && isEditMode) {
-                Toast.makeText(getContext(), "Chức năng sửa công thức: " + recipe.getTitle(), Toast.LENGTH_SHORT).show();
-                Log.d("RecipeDetail", "Chuyển sang chế độ sửa: " + recipe.getTitle());
-
                 PostRecipeFragment editRecipe = new PostRecipeFragment();
                 if (args != null) {
                     editRecipe.setArguments(args);
-                } else {
-                    Log.w("RecipeDetail", "Arguments bị null khi chuyển sang PostRecipeFragment");
                 }
 
                 requireActivity().getSupportFragmentManager()
@@ -205,25 +199,18 @@ public class RecipeDetailFragment extends Fragment {
                         .commit();
 
             } else if (recipe != null && isApproveMode) {
-                //TODO: Đưa công thức chờ duyệt sang công thức hoàn chỉnh trong database
                 recipe.setStatus(true);
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 DocumentReference recipeRef = db.collection("recipes").document(recipe.getId());
 
                 recipeRef.update("status", recipe.getStatus())
                         .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(getContext(), "Đã chấp nhận công thức: " + recipe.getTitle(), Toast.LENGTH_SHORT).show();
-                            Log.d("RecipeDetail", "Chế độ duyệt: Đã chấp nhận " + recipe.getTitle());
                             requireActivity().getSupportFragmentManager().popBackStack();
                         })
                         .addOnFailureListener(e -> {
-                            Toast.makeText(getContext(), "Lỗi khi cập nhật trạng thái", Toast.LENGTH_SHORT).show();
                             Log.e("RecipeDetail", "Lỗi cập nhật trạng thái", e);
                         });
 
-            } else {
-                Toast.makeText(getContext(), "Chế độ không rõ", Toast.LENGTH_SHORT).show();
-                Log.w("RecipeDetail", "Không xác định được chế độ hiện tại");
             }
         });
 
@@ -235,18 +222,15 @@ public class RecipeDetailFragment extends Fragment {
                 db.collection("recipes").document(recipe.getId())
                         .delete()
                         .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(getContext(), "Đã xóa công thức: " + recipe.getTitle(), Toast.LENGTH_SHORT).show();
                             Log.d("RecipeDetail", "Đã xóa công thức khỏi Firestore");
 
                             // Quay về Fragment trước sau khi xóa thành công
                             requireActivity().getSupportFragmentManager().popBackStack();
                         })
                         .addOnFailureListener(e -> {
-                            Toast.makeText(getContext(), "Lỗi khi xóa công thức", Toast.LENGTH_SHORT).show();
                             Log.e("RecipeDetail", "Lỗi xóa công thức", e);
                         });
             } else {
-                Toast.makeText(getContext(), "Không thể xóa công thức", Toast.LENGTH_SHORT).show();
                 Log.w("RecipeDetail", "recipe bị null");
             }
         });
