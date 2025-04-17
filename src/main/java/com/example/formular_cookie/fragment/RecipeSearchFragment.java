@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import com.google.android.material.chip.ChipGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+// Fragment để tìm kiếm công thức nấu ăn.
 public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRecipeClickListener {
 
     private EditText etSearch;
@@ -43,9 +45,9 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
     private FirebaseRecipeRepository recipeRepository;
 
     private String currentQuery = "";
-    private boolean isLoading = false;
-    private List<Recipe> currentRecipes = new ArrayList<>();
+    private final List<Recipe> currentRecipes = new ArrayList<>();
     private int selectedChipId = View.NO_ID;
+
     public interface OnRecipeSelectedListener {
         void onRecipeSelected(Recipe recipe);
     }
@@ -61,7 +63,7 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
             throw new ClassCastException(context.toString() + " must implement OnRecipeSelectedListener");
         }
 
-        // Khởi t tạo repository
+        // Khởi tạo repository
         recipeRepository = FirebaseRecipeRepository.getInstance(context);
     }
 
@@ -87,7 +89,7 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
                 chipGroup.check(selectedChipId);
             }
         } else {
-            // Show search prompt nếu không có trạng thái được lưu
+            // Hiển thị gợi ý tìm kiếm nếu không có trạng thái được lưu
             tvNoResults.setVisibility(View.VISIBLE);
             tvNoResults.setText(R.string.search_prompt);
         }
@@ -103,6 +105,7 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
         outState.putInt("selectedChipId", selectedChipId);
     }
 
+    // Khởi tạo các view trong fragment.
     private void initViews(View view) {
         etSearch = view.findViewById(R.id.et_search);
         btnClear = view.findViewById(R.id.btn_clear);
@@ -112,6 +115,7 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
         tvNoResults = view.findViewById(R.id.tv_no_results);
     }
 
+    // Thiết lập RecyclerView để hiển thị danh sách công thức.
     private void setupRecyclerView() {
         recipeAdapter = new RecipeAdapter(requireContext());
         recipeAdapter.setOnRecipeClickListener(this);
@@ -128,6 +132,7 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
         }
     }
 
+    // Thiết lập các listener cho các sự kiện trong giao diện.
     private void setupListeners() {
         etSearch.addTextChangedListener(new TextWatcher() {
             private long lastTextEdit = 0;
@@ -179,20 +184,19 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
             selectedChipId = checkedId;
 
             if (checkedId == View.NO_ID) {
-                // No chip selected
-                // currentCategory = "";
+                // Không có chip nào được chọn
             } else {
-                // Filter by selected category
+                // Lọc theo danh mục được chọn
                 Chip chip = getView().findViewById(checkedId);
                 if (chip != null) {
-                    // currentCategory = chip.getText().toString();
-                    // For now, just use the chip text as a search term
+                    // Tạm thời sử dụng văn bản của chip làm từ khóa tìm kiếm
                     etSearch.setText(chip.getText());
                 }
             }
         });
     }
 
+    // Thực hiện tìm kiếm công thức dựa trên từ khóa.
     private void searchRecipes() {
         // Không thực hiện tìm kiếm nếu query trống
         if (currentQuery.isEmpty()) {
@@ -222,11 +226,13 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
 
                 showLoading(false);
                 Toast.makeText(requireContext(),
-                        "Error searching recipes: " + errorMessage, Toast.LENGTH_SHORT).show();
+                        getString(R.string.search_error) + ": " + errorMessage,
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    // Cập nhật danh sách công thức hiển thị.
     private void updateRecipeList(List<Recipe> recipes) {
         currentRecipes.clear();
         currentRecipes.addAll(recipes);
@@ -240,14 +246,13 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
         }
     }
 
+    // Hiển thị hoặc ẩn ProgressBar khi tải dữ liệu.
     private void showLoading(boolean show) {
-        isLoading = show;
         progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
         if (show) {
             tvNoResults.setVisibility(View.GONE);
         }
     }
-
 
     @Override
     public void onRecipeClick(Recipe recipe, int position) {
@@ -259,11 +264,15 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
         super.onDetach();
         callback = null;
     }
-    // Phương thức để khôi phục trạng thái tìm kiếm
+
+    // Khôi phục trạng thái tìm kiếm.
     public void restoreSearchState() {
+        Log.d("RecipeSearchFragment", "Restoring search state");
         if (!currentQuery.isEmpty()) {
+            Log.d("RecipeSearchFragment", "Restoring search state with query: " + currentQuery);
             etSearch.setText(currentQuery);
             if (!currentRecipes.isEmpty()) {
+                Log.d("RecipeSearchFragment", "Restoring search state with recipes");
                 recipeAdapter.updateData(currentRecipes);
                 tvNoResults.setVisibility(View.GONE);
             } else {
@@ -273,6 +282,4 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
             chipGroup.check(selectedChipId);
         }
     }
-
-
 }

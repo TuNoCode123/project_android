@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
+// Đại diện cho một công thức nấu ăn với các thông tin như tiêu đề, hình ảnh, nguyên liệu và các bước.
 public class Recipe implements Parcelable {
     private String id;
     private String title;
@@ -18,12 +19,13 @@ public class Recipe implements Parcelable {
     private Author author;
     private String authorImageUrl;
 
+    // Constructor để khởi tạo các giá trị mặc định.
     public Recipe() {
-//        ingredients = new ArrayList<>();
+        // ingredients = new ArrayList<>();
         steps = new ArrayList<>();
     }
 
-    // Getters and setters
+    // Getter và Setter cho các thuộc tính của công thức.
     public String getId() {
         return id;
     }
@@ -47,7 +49,6 @@ public class Recipe implements Parcelable {
     public String getImageUrl() {
         return imageUrl;
     }
-
 
     public String getSummary() {
         return summary;
@@ -112,9 +113,8 @@ public class Recipe implements Parcelable {
         this.authorImageUrl = authorImageUrl;
     }
 
-
-
-    // Parcelable implementation
+    // Parcelable implementation để cho phép truyền đối tượng Recipe giữa các thành
+    // phần.
     protected Recipe(Parcel in) {
         id = in.readString();
         title = in.readString();

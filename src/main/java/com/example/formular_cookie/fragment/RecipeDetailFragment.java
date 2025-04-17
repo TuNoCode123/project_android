@@ -26,6 +26,7 @@ import com.example.formular_cookie.model.Recipe;
 import com.example.formular_cookie.repository.FirebaseRecipeRepository;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
+// Fragment để hiển thị chi tiết công thức nấu ăn.
 public class RecipeDetailFragment extends Fragment {
 
     private static final String ARG_RECIPE = "recipe";
@@ -57,7 +58,7 @@ public class RecipeDetailFragment extends Fragment {
 
         if (getArguments() != null) {
             recipe = getArguments().getParcelable(ARG_RECIPE);
-        }else if (savedInstanceState != null) {
+        } else if (savedInstanceState != null) {
             // Khôi phục từ savedInstanceState nếu có
             recipe = savedInstanceState.getParcelable(ARG_RECIPE);
             isFullyLoaded = savedInstanceState.getBoolean("isFullyLoaded", false);
@@ -79,7 +80,8 @@ public class RecipeDetailFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
 
         initViews(view);
@@ -101,6 +103,7 @@ public class RecipeDetailFragment extends Fragment {
         return view;
     }
 
+    // Khởi tạo các view trong fragment.
     private void initViews(View view) {
         collapsingToolbar = view.findViewById(R.id.collapsing_toolbar);
         toolbar = view.findViewById(R.id.toolbar);
@@ -121,6 +124,7 @@ public class RecipeDetailFragment extends Fragment {
         rvInstructions.setAdapter(instructionsAdapter);
     }
 
+    // Thiết lập Toolbar cho fragment.
     private void setupToolbar() {
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
         activity.setSupportActionBar(toolbar);
@@ -129,6 +133,7 @@ public class RecipeDetailFragment extends Fragment {
         toolbar.setNavigationOnClickListener(v -> requireActivity().onBackPressed());
     }
 
+    // Hiển thị thông tin cơ bản của công thức.
     private void displayBasicRecipeInfo() {
         collapsingToolbar.setTitle(recipe.getTitle());
 
@@ -161,13 +166,15 @@ public class RecipeDetailFragment extends Fragment {
         }
     }
 
+    // Lấy thông tin chi tiết của công thức từ Firestore.
     private void fetchRecipeDetails(String recipeId) {
         progressBar.setVisibility(View.VISIBLE);
 
         recipeRepository.getRecipeById(recipeId, new FirebaseRecipeRepository.OnRecipeLoadedListener() {
             @Override
             public void onRecipeLoaded(Recipe loadedRecipe) {
-                if (!isAdded()) return;
+                if (!isAdded())
+                    return;
 
                 progressBar.setVisibility(View.GONE);
                 recipe = loadedRecipe;
@@ -177,7 +184,8 @@ public class RecipeDetailFragment extends Fragment {
 
             @Override
             public void onError(String errorMessage) {
-                if (!isAdded()) return;
+                if (!isAdded())
+                    return;
 
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(requireContext(),

@@ -1,6 +1,5 @@
 package com.example.formular_cookie.adapter;
 
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
@@ -26,21 +25,25 @@ import com.example.formular_cookie.model.Recipe;
 import java.util.ArrayList;
 import java.util.List;
 
+// Adapter for displaying a list of recipes in a RecyclerView.
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 
     private Context context;
     private List<Recipe> recipeList;
     private OnRecipeClickListener listener;
 
+    // Interface for handling recipe click events.
     public interface OnRecipeClickListener {
         void onRecipeClick(Recipe recipe, int position);
     }
 
+    // Constructor to initialize the adapter with a context.
     public RecipeAdapter(Context context) {
         this.context = context;
         this.recipeList = new ArrayList<>();
     }
 
+    // Sets a listener for recipe click events.
     public void setOnRecipeClickListener(OnRecipeClickListener listener) {
         this.listener = listener;
     }
@@ -60,13 +63,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
         holder.tvAuthorName.setText(recipe.getAuthorName());
         // Set followers if available, otherwise show category
-//       if (recipe.getAuthorFollowers() > 0) {
-//           holder.tvFollowers.setText(formatNumber(recipe.getAuthorFollowers()) + " Followers");
-//       } else if (recipe.getCategory() != null && !recipe.getCategory().isEmpty()) {
-//           holder.tvFollowers.setText(recipe.getCategory());
-//       } else {
-//           holder.tvFollowers.setText("Recipe");
-//       }
+        // if (recipe.getAuthorFollowers() > 0) {
+        // holder.tvFollowers.setText(formatNumber(recipe.getAuthorFollowers()) + "
+        // Followers");
+        // } else if (recipe.getCategory() != null && !recipe.getCategory().isEmpty()) {
+        // holder.tvFollowers.setText(recipe.getCategory());
+        // } else {
+        // holder.tvFollowers.setText("Recipe");
+        // }
 
         // Tải ảnh công thức
         holder.progressImage.setVisibility(View.VISIBLE);
@@ -77,13 +81,16 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
                 .error(R.drawable.error_image)
                 .listener(new RequestListener<>() {
                     @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target,
+                            boolean isFirstResource) {
                         holder.progressImage.setVisibility(View.GONE);
                         return false;
                     }
 
                     @Override
-                    public boolean onResourceReady(android.graphics.drawable.Drawable resource, Object model, Target<android.graphics.drawable.Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                    public boolean onResourceReady(android.graphics.drawable.Drawable resource, Object model,
+                            Target<android.graphics.drawable.Drawable> target, DataSource dataSource,
+                            boolean isFirstResource) {
                         holder.progressImage.setVisibility(View.GONE);
                         return false;
                     }
@@ -112,7 +119,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         return recipeList.size();
     }
 
-    // Update the dataset
+    // Updates the data in the adapter and refreshes the view.
     public void updateData(List<Recipe> newRecipes) {
         recipeList.clear();
         if (newRecipes != null) {
@@ -137,6 +144,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         }
     }
 
+    // ViewHolder class for holding recipe views.
     public class RecipeViewHolder extends RecyclerView.ViewHolder {
         ImageView ivRecipe, ivAuthor;
         TextView tvRecipeTitle, tvAuthorName, tvFollowers, tvLikes, tvTime;
@@ -145,12 +153,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
 
-
             ivRecipe = itemView.findViewById(R.id.iv_recipe);
             ivAuthor = itemView.findViewById(R.id.iv_author);
             tvRecipeTitle = itemView.findViewById(R.id.tv_recipe_title);
             tvAuthorName = itemView.findViewById(R.id.tv_author_name);
-//            tvFollowers = itemView.findViewById(R.id.tv_followers);
+            // tvFollowers = itemView.findViewById(R.id.tv_followers);
             tvLikes = itemView.findViewById(R.id.tv_likes);
             tvTime = itemView.findViewById(R.id.tv_time);
             progressImage = itemView.findViewById(R.id.progress_image);

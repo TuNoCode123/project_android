@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import java.util.Map;
 
+// Đại diện cho một tác giả với các thông tin như tên, hình ảnh, số lượng người theo dõi và email.
 public class Author implements Parcelable {
     private String id;
     private String name;
@@ -12,18 +13,18 @@ public class Author implements Parcelable {
     private int followers;
     private String email;
 
-    // Default constructor
+    // Constructor mặc định để khởi tạo giá trị mặc định.
     public Author() {
     }
 
-    // Constructor with parameters
+    // Constructor với tham số để khởi tạo một tác giả.
     public Author(String id, String name, String imageUrl) {
         this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
     }
 
-    // Getters
+    // Getter và Setter cho các thuộc tính của tác giả.
     public String getId() {
         return id;
     }
@@ -44,7 +45,6 @@ public class Author implements Parcelable {
         return email;
     }
 
-    // Setters
     public void setId(String id) {
         this.id = id;
     }
@@ -65,16 +65,19 @@ public class Author implements Parcelable {
         this.email = email;
     }
 
-    // Convert from Firestore Map to Author object
+    // Phương thức chuyển đổi từ Map Firestore sang đối tượng Author.
     public static Author fromMap(String id, Map<String, Object> map) {
         Author author = new Author();
         author.id = id;
 
-        if (map.containsKey("name")) author.name = (String) map.get("name");
-        if (map.containsKey("imageUrl")) author.imageUrl = (String) map.get("imageUrl");
-        if (map.containsKey("email")) author.email = (String) map.get("email");
+        if (map.containsKey("name"))
+            author.name = (String) map.get("name");
+        if (map.containsKey("imageUrl"))
+            author.imageUrl = (String) map.get("imageUrl");
+        if (map.containsKey("email"))
+            author.email = (String) map.get("email");
 
-        // Get followers as Long and convert to int
+        // Lấy số lượng người theo dõi dưới dạng Long và chuyển đổi sang int.
         if (map.containsKey("followers")) {
             Object followers = map.get("followers");
             if (followers instanceof Long) {
@@ -87,7 +90,8 @@ public class Author implements Parcelable {
         return author;
     }
 
-    // Parcelable implementation
+    // Parcelable implementation để cho phép truyền đối tượng Author giữa các thành
+    // phần.
     protected Author(Parcel in) {
         id = in.readString();
         name = in.readString();

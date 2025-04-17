@@ -2,76 +2,120 @@ package com.example.formular_cookie.route;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.example.formular_cookie.MainActivity;
+import com.example.formular_cookie.HomeFragment;
 import com.example.formular_cookie.R;
 import com.example.formular_cookie.fragment.RecipeDetailFragment;
 import com.example.formular_cookie.fragment.RecipeSearchFragment;
 import com.example.formular_cookie.model.Recipe;
 
-/**
- * Lớp quản lý điều hướng giữa các màn hình trong ứng dụng
- */
+import java.util.HashMap;
+import java.util.Map;
 
+// Lớp quản lý điều hướng và trạng thái giữa các màn hình trong ứng dụng.
 public class NavigationManager {
 
-    private static final String TAG_SEARCH_FRAGMENT = "search_fragment";
+    private final FragmentManager fragmentManager;
+    private final Map<String, Fragment> fragmentMap = new HashMap<>();
+    private final Map<String, TabState> tabStates = new HashMap<>();
+    private String currentTabTag;
+
+    // Các tag để quản lý fragment
+    public static final String TAG_HOME_FRAGMENT = "home_fragment";
+    public static final String TAG_SEARCH_FRAGMENT = "search_fragment";
     private static final String TAG_DETAIL_FRAGMENT = "detail_fragment";
 
-    private final MainActivity activity;
-    private final FragmentManager fragmentManager;
-
-    public NavigationManager(MainActivity activity) {
-        this.activity = activity;
-        this.fragmentManager = activity.getSupportFragmentManager();
+    public NavigationManager(FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
+        initTabStates();
     }
 
-    /**
-     * Điều hướng đến màn hình tìm kiếm
-     */
-    public void navigateToSearch() {
-        RecipeSearchFragment searchFragment = (RecipeSearchFragment) fragmentManager.findFragmentByTag(TAG_SEARCH_FRAGMENT);
+    // Lớp để lưu trạng thái của mỗi tab
+    private static class TabState {
+        boolean isDetailShowing = false;
+        Recipe currentRecipe = null;
 
-        if (searchFragment == null) {
-            searchFragment = new RecipeSearchFragment();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainer, searchFragment, TAG_SEARCH_FRAGMENT)
-                    .commit();
-        } else {
-            // Hiển thị fragment đã tồn tại
-            fragmentManager.beginTransaction()
-                    .show(searchFragment)
-                    .commit();
+        TabState() {
+        }
 
-            // Khôi phục trạng thái tìm kiếm
-            searchFragment.restoreSearchState();
+        TabState(boolean isDetailShowing, Recipe currentRecipe) {
+            this.isDetailShowing = isDetailShowing;
+            this.currentRecipe = currentRecipe;
         }
     }
 
-    /**
-     * Điều hướng đến màn hình chi tiết công thức
-     */
-    public void navigateToDetail(Recipe recipe) {
-        // Tạo fragment chi tiết mới
-        RecipeDetailFragment detailFragment = RecipeDetailFragment.newInstance(recipe);
-
-        // Thực hiện transaction
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, detailFragment, TAG_DETAIL_FRAGMENT)
-                .addToBackStack(TAG_DETAIL_FRAGMENT)
-                .commit();
+    // Khởi tạo trạng thái cho mỗi tab
+    private void initTabStates() {
+        tabStates.put(TAG_HOME_FRAGMENT, new TabState());
+        tabStates.put(TAG_SEARCH_FRAGMENT, new TabState());
     }
 
-    /**
-     * Khôi phục trạng thái điều hướng
-     */
-
-    public void restoreNavigationState(String currentFragmentTag, Recipe currentRecipe) {
-        if (TAG_DETAIL_FRAGMENT.equals(currentFragmentTag) && currentRecipe != null) {
-            navigateToDetail(currentRecipe);
-        } else {
-            navigateToSearch();
+    // Chuyển đến tab mới
+    public void switchToTab(String tabTag, boolean addToBackStack) {
+        Fragment fragment = fragmentMap.get(tabTag);
+        if (fragment == null) {
+            if (tabTag.equals(TAG_HOME_FRAGMENT)) {
+                fragment = new HomeFragment();
+            } else if (tabTag.equals(TAG_SEARCH_FRAGMENT)) {
+                fragment = new RecipeSearchFragment();
+            }
+            fragmentMap.put(tabTag, fragment);
         }
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragmentContainer, fragment, tabTag);
+
+        if (addToBackStack) {
+            transaction.addToBackStack(null);
+        }
+
+        transaction.commit();
+        currentTabTag = tabTag;
+    }
+
+    // Hiển thị fragment chi tiết
+    public void showDetailFragment(Recipe recipe, boolean addToBackStack) {
+        Fragment detailFragment = RecipeDetailFragment.newInstance(recipe);
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragmentContainer, detailFragment, TAG_DETAIL_FRAGMENT);
+
+        if (addToBackStack) {
+            transaction.addToBackStack(null);
+        }
+
+        transaction.commit();
+
+        TabState state = tabStates.get(currentTabTag);
+        if (state != null) {
+            state.isDetailShowing = true;
+            state.currentRecipe = recipe;
+        }
+    }
+
+    // Xóa back stack
+    public void clearBackStack() {
+        for (int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
+            fragmentManager.popBackStack();
+        }
+    }
+
+    // Khôi phục trạng thái tab
+    public void restoreTabState(String tabTag, boolean isDetailShowing, Recipe currentRecipe) {
+        TabState state = tabStates.get(tabTag);
+        if (state != null) {
+            state.isDetailShowing = isDetailShowing;
+            state.currentRecipe = currentRecipe;
+        }
+    }
+
+    // Lấy trạng thái tab hiện tại
+    public TabState getCurrentTabState() {
+        return tabStates.get(currentTabTag);
+    }
+
+    public String getCurrentTabTag() {
+        return currentTabTag;
     }
 }
-

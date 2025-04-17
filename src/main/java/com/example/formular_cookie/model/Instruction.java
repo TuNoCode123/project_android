@@ -7,16 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+// Đại diện cho một hướng dẫn nấu ăn, bao gồm tên và danh sách các bước.
 public class Instruction implements Parcelable {
     private String name;
     private List<Step> steps;
 
-    // Default constructor
+    // Constructor mặc định để khởi tạo danh sách các bước.
     public Instruction() {
         steps = new ArrayList<>();
     }
 
-    // Constructor with parameters
+    // Constructor với tham số để khởi tạo hướng dẫn.
     public Instruction(String name, List<Step> steps) {
         this.name = name;
         this.steps = steps != null ? steps : new ArrayList<>();
@@ -40,11 +41,12 @@ public class Instruction implements Parcelable {
         this.steps = steps;
     }
 
-    // Convert from Firestore Map to Instruction object
+    // Phương thức chuyển đổi từ Map Firestore sang đối tượng Instruction.
     public static Instruction fromMap(Map<String, Object> map) {
         Instruction instruction = new Instruction();
 
-        if (map.containsKey("name")) instruction.name = (String) map.get("name");
+        if (map.containsKey("name"))
+            instruction.name = (String) map.get("name");
 
         if (map.containsKey("steps") && map.get("steps") instanceof List) {
             List<Map<String, Object>> stepsList = (List<Map<String, Object>>) map.get("steps");
@@ -57,7 +59,8 @@ public class Instruction implements Parcelable {
         return instruction;
     }
 
-    // Parcelable implementation
+    // Parcelable implementation để cho phép truyền đối tượng Instruction giữa các
+    // thành phần.
     protected Instruction(Parcel in) {
         name = in.readString();
         steps = new ArrayList<>();
@@ -87,15 +90,16 @@ public class Instruction implements Parcelable {
         }
     };
 
+    // Lớp Step đại diện cho một bước trong hướng dẫn.
     public static class Step implements Parcelable {
         private int number;
         private String step;
 
-        // Default constructor
+        // Constructor mặc định.
         public Step() {
         }
 
-        // Constructor with parameters
+        // Constructor với tham số để khởi tạo bước.
         public Step(int number, String step) {
             this.number = number;
             this.step = step;
@@ -119,7 +123,7 @@ public class Instruction implements Parcelable {
             this.step = step;
         }
 
-        // Convert from Firestore Map to Step object
+        // Phương thức chuyển đổi từ Map Firestore sang đối tượng Step.
         public static Step fromMap(Map<String, Object> map) {
             Step step = new Step();
 
@@ -131,12 +135,14 @@ public class Instruction implements Parcelable {
                     step.number = (Integer) num;
                 }
             }
-            if (map.containsKey("step")) step.step = (String) map.get("step");
+            if (map.containsKey("step"))
+                step.step = (String) map.get("step");
 
             return step;
         }
 
-        // Parcelable implementation
+        // Parcelable implementation để cho phép truyền đối tượng Step giữa các thành
+        // phần.
         protected Step(Parcel in) {
             number = in.readInt();
             step = in.readString();
