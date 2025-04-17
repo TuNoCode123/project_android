@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Food App</string>
+    <string name="search_prompt">Enter the name of the dish you want to find</string>
+    <string name="no_results">No recipes found. Please try with a different keyword.</string>
+    <string name="search_error">Error searching for recipes. Please try again.</string>
+    <string name="network_error">Network error. Please check your connection and try again.</string>
+    <string name="unknown_author">Unknown</string>
+    <string name="summary">Description</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="instructions">Instructions</string>
+    <string name="search_for_recipes">Search for recipes</string>
+    <string name="search_recipes">SEARCH</string>
+</resources>

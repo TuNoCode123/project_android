@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">Food App</string>
-    <string name="search_prompt">Enter a recipe name or ingredient to search</string>
-    <string name="no_results">No recipes found. Try a different search term.</string>
+    <string name="search_prompt">Nhập tên món ăn bạn muốn tìm</string>
+    <string name="no_results">Không tìm thấy công thức. Hãy thử với từ khóa khác.</string>
     <string name="search_error">Lỗi khi tìm kiếm công thức. Vui lòng thử lại.</string>
-    <string name="network_error">Network error. Please check your connection and try again.</string>
+    <string name="network_error">Lỗi mạng. Vui lòng kiểm tra kết nối và thử lại.</string>
     <string name="unknown_author">Không rõ</string>
+    <string name="summary">Mô tả</string>
+    <string name="ingredients">Nguyên liệu</string>
+    <string name="instructions">Hướng dẫn</string>
+    <string name="search_for_recipes">Tìm kiếm công thức</string>
+    <string name="search_recipes">TÌM KIẾM</string>
 </resources>

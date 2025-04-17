@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Food App</string>
+    <string name="search_prompt">Geben Sie den Namen des Gerichts ein, das Sie suchen möchten</string>
+    <string name="no_results">Keine Rezepte gefunden. Bitte versuchen Sie es mit einem anderen Schlüsselwort.</string>
+    <string name="search_error">Fehler bei der Rezeptsuche. Bitte versuchen Sie es erneut.</string>
+    <string name="network_error">Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.</string>
+    <string name="unknown_author">Unbekannt</string>
+    <string name="summary">Beschreibung</string>
+    <string name="ingredients">Zutaten</string>
+    <string name="instructions">Anweisungen</string>
+    <string name="search_for_recipes">Nach Rezepten suchen</string>
+    <string name="search_recipes">SUCHE</string>
+</resources>

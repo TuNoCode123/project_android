@@ -1,6 +1,7 @@
 package com.example.formular_cookie.fragment;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -109,6 +110,9 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
     private void initViews(View view) {
         etSearch = view.findViewById(R.id.et_search);
         btnClear = view.findViewById(R.id.btn_clear);
+        if(getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
+
+        }
         chipGroup = view.findViewById(R.id.chip_group);
         rvRecipes = view.findViewById(R.id.rv_recipes);
         progressBar = view.findViewById(R.id.progress_bar);
@@ -120,8 +124,13 @@ public class RecipeSearchFragment extends Fragment implements RecipeAdapter.OnRe
         recipeAdapter = new RecipeAdapter(requireContext());
         recipeAdapter.setOnRecipeClickListener(this);
 
+        var spanCount = 2;
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            spanCount = 4; // Hiển thị 3 cột trong chế độ ngang
+        }
+
         // Dùng GridLayoutManager để hiển thị các món ăn theo dạng lưới
-        final GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), 2);
+        final GridLayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
         rvRecipes.setLayoutManager(layoutManager);
         rvRecipes.setAdapter(recipeAdapter);
 
