@@ -67,6 +67,7 @@ public class Account extends Fragment {
         });
         Setting.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), SettingFragment.class);
+            getActivity().finish();
             startActivity(intent);
         });
 
@@ -98,7 +99,6 @@ public class Account extends Fragment {
         transaction.replace(R.id.fragmentContainer, fragment);
         transaction.commit();
     }
-
     private void animateTextColor(final TextView active, final TextView inactive) {
         int colorActive = Color.parseColor("#00AFFF");
         int colorInactive = Color.parseColor("#B0B0B0");

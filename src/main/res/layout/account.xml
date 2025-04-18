@@ -30,8 +30,8 @@
 
     <ImageButton
         android:id="@+id/Setting"
-        android:layout_width="54dp"
-        android:layout_height="54dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="@drawable/round_button"
         android:paddingHorizontal="6dp"
         android:scaleType="fitCenter"
