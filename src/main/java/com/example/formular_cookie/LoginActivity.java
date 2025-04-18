@@ -1,12 +1,9 @@
 package com.example.formular_cookie;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,17 +13,25 @@ import androidx.fragment.app.FragmentTransaction;
 public class LoginActivity extends AppCompatActivity {
 
     private TextView tvLogin, tvRegister;
+    private View underlineLogin;
+    private View underlineRegister;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         tvLogin = findViewById(R.id.tvLogin);
         tvRegister = findViewById(R.id.tvRegister);
+        underlineLogin = findViewById(R.id.underlineLogin);
+        underlineRegister = findViewById(R.id.underlineRegister);
         switchToFragment(new login());
 
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tvLogin.setTextColor(Color.parseColor("#FF9800"));
+                tvRegister.setTextColor(Color.parseColor("#B0B0B0"));
+                underlineLogin.setVisibility(View.VISIBLE);
+                underlineRegister.setVisibility(View.INVISIBLE);
                 switchToFragment(new login());
                 animateTextColor(tvLogin, tvRegister);
             }
@@ -34,6 +39,10 @@ public class LoginActivity extends AppCompatActivity {
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tvLogin.setTextColor(Color.parseColor("#B0B0B0"));
+                tvRegister.setTextColor(Color.parseColor("#FF9800"));
+                underlineLogin.setVisibility(View.INVISIBLE);
+                underlineRegister.setVisibility(View.VISIBLE);
                 switchToFragment(new signin());
                 animateTextColor(tvRegister, tvLogin);
             }

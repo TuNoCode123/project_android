@@ -1,5 +1,6 @@
 package com.example.formular_cookie;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,12 +24,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     private BottomNavigationView bottomNavigationView;
-
+    private String usermail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        String usermail = getIntent().getStringExtra("usermail");
         // Initialize bottom navigation
         bottomNavigationView = findViewById(R.id.bottomNavigation);
         setupBottomNavigation();
@@ -53,9 +54,10 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Mua sắm", Toast.LENGTH_SHORT).show();
                     return true;
                 } else if (itemId == R.id.nav_account) {
-                    Toast.makeText(MainActivity.this, "Tài khoản", Toast.LENGTH_SHORT).show();
-                    return true;
+
+                    selectedFragment = new Account();
                 }
+
 
                 if (selectedFragment != null) {
                     getSupportFragmentManager().beginTransaction()
