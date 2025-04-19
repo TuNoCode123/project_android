@@ -1,4 +1,5 @@
 /build
+
 .env
 /.gradle
 /.idea
@@ -9,3 +10,4 @@ google-services.json
 
 gradlew.bat
 *.properties
+
