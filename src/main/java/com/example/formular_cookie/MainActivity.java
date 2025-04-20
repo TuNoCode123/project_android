@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.formular_cookie.model.Recipe;
+import com.example.formular_cookie.repository.FirebaseRecipeRepository;
 import com.example.formular_cookie.route.NavigationManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -20,6 +21,18 @@ public class MainActivity extends AppCompatActivity implements RecipeSearchFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Tải danh sách tên công thức từ Firebase
+        FirebaseRecipeRepository.getInstance(this).fetchAndStoreRecipeNames(new FirebaseRecipeRepository.OnRecipeNamesLoadedListener() {
+            @Override
+            public void onRecipeNamesLoaded(int count) {
+                // Tên công thức đã được tải thành công
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                // Handle error
+            }
+        });
         navigationManager = new NavigationManager(getSupportFragmentManager());
 
         bottomNavigationView = findViewById(R.id.bottomNavigation);

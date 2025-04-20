@@ -9,5 +9,7 @@
 google-services.json
 
 gradlew.bat
-*.properties
+local.properties
+
+gradlew
 
