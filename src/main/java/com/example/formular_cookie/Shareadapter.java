@@ -47,7 +47,6 @@ public class Shareadapter extends RecyclerView.Adapter<Shareadapter.ItemHolder> 
 
     public class ItemHolder extends RecyclerView.ViewHolder{
         TextView itemName;
-        TextView itemRecipe;
         ImageView itemImage;
         View view;
         ConstraintLayout constraintLayout;

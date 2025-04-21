@@ -34,7 +34,7 @@ public class Sharefrag extends Fragment {
     private TextView emptyView;
     private List<ShareItem> items;
     private Shareadapter adapter;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -69,7 +69,7 @@ public class Sharefrag extends Fragment {
                                 Log.d(TAG, userId);
                                 Log.d(TAG, "Added recipe: " + name + ", Image URL: " + imageUrl);
                             }
-                            adapter.notifyDataSetChanged(); // Notify adapter of data changes
+                            adapter.notifyDataSetChanged();
                             if (items.isEmpty()) {
                                 recyclerView.setVisibility(View.GONE);
                                 emptyView.setVisibility(View.VISIBLE);
