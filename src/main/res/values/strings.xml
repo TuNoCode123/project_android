@@ -26,4 +26,8 @@
     <string name="hint_unit">Đơn vị</string>
     <string name="text_view_details">Xem chi tiết</string>
     <string name="hint_step_description">Mô tả bước làm</string>
+    <string name="no_favorites">Không có công thức yêu thích</string>
+    <string name="favorite_recipes">Công thức yêu thích:</string>
+    <string name="username_label">Tên người dùng</string>
+
 </resources>

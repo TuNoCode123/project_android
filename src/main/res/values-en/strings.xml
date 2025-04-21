@@ -24,4 +24,8 @@
     <string name="hint_unit">Unit</string>
     <string name="text_view_details">View Details</string>
     <string name="hint_step_description">Step Description</string>
+    <string name="no_favorites">No favorite recipes</string>
+    <string name="favorite_recipes">Favorite recipes:</string>
+    <string name="username_label">Username</string>
+
 </resources>

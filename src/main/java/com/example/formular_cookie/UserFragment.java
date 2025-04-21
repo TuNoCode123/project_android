@@ -43,7 +43,18 @@ public class UserFragment extends Fragment {
 
         userList = new ArrayList<>();
         adapter = new UserAdapter(getContext(), userList, user -> {
-            // Xử lý khi nhấn "Xem Chi Tiết"
+            UserDetailFragment detailFragment = new UserDetailFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("user", user);
+
+            detailFragment.setArguments(bundle);
+
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.admin_fragment_container, detailFragment)
+                    .addToBackStack(null)
+                    .commit();
         });
 
         recyclerView.setAdapter(adapter);
@@ -63,6 +74,7 @@ public class UserFragment extends Fragment {
                     for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
                         User user = doc.toObject(User.class);
                         if (user != null) {
+                            user.setId(doc.getId());
                             userList.add(user);
                         }
                     }

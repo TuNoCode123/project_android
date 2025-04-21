@@ -124,14 +124,14 @@
             android:id="@+id/btn_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sửa"
+            android:text="@string/text_edit"
             android:backgroundTint="#4CAF50"/>
 
         <Button
             android:id="@+id/btn_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Xóa"
+            android:text="@string/text_delete"
             android:backgroundTint="#F44336"
             android:layout_marginStart="12dp" />
     </LinearLayout>

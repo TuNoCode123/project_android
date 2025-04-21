@@ -27,4 +27,8 @@
     <string name="hint_unit">Einheit</string>
     <string name="text_view_details">Details anzeigen</string>
     <string name="hint_step_description">Schrittbeschreibung</string>
+    <string name="no_favorites">Keine Lieblingsrezepte</string>
+    <string name="favorite_recipes">Lieblingsrezepte:</string>
+    <string name="username_label">Benutzername</string>
+
 </resources>
