@@ -3,3 +3,13 @@
 google-services.json
 /settings.gradle.kts
 /gradle.properties
+/.gradle
+/.idea
+
+local.properties
+gradlew.bat
+
+/gradle
+
+*.hprof
+
