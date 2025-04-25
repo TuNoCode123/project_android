@@ -1,4 +1,4 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,10 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-
+import com.example.formular_cookie.R;
+import com.example.formular_cookie.model.User;
+import com.example.formular_cookie.adapter.UserAdapter;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;

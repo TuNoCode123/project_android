@@ -1,4 +1,4 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.utils;
 
 public interface UploadCallback {
     void onUploadSuccess(String imageUrl);

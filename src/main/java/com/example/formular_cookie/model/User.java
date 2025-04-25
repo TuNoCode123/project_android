@@ -1,4 +1,4 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.model;
 
 import java.io.Serializable;
 import java.util.List;

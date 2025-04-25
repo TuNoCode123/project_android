@@ -1,14 +1,14 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.model;
 
-public class Ingredient {
+public class AdminIngredient {
     private String name;
     private String amount;
     private String unit;
 
-    public Ingredient() {
+    public AdminIngredient() {
     }
 
-    public Ingredient(String name, String amount, String unit) {
+    public AdminIngredient(String name, String amount, String unit) {
         this.name = name;
         this.unit = unit;
         this.amount = amount;

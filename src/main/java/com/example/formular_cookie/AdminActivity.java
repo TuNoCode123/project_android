@@ -5,6 +5,12 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import com.example.formular_cookie.fragment.AccountFragment;
+import com.example.formular_cookie.fragment.ApproveRecipesFragment;
+import com.example.formular_cookie.fragment.PostRecipeFragment;
+import com.example.formular_cookie.fragment.RecipeListFragment;
+import com.example.formular_cookie.fragment.UserFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 

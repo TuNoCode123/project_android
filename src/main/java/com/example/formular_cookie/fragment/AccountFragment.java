@@ -1,4 +1,4 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.formular_cookie.R;
 
 public class AccountFragment extends Fragment {
 

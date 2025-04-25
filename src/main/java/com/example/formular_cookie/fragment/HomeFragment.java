@@ -1,9 +1,8 @@
-package com.example.formular_cookie;// HomeFragment.java
+package com.example.formular_cookie.fragment;// HomeFragment.java
 
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +20,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import com.example.formular_cookie.model.FoodItem;
 import com.example.formular_cookie.R;
+import com.example.formular_cookie.adapter.FoodAdapter;
 import com.google.android.material.chip.Chip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;

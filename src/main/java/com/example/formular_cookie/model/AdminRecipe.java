@@ -1,9 +1,9 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.model;
 
 import java.io.Serializable;
 import java.util.List;
 
-public class Recipe implements Serializable {
+public class AdminRecipe implements Serializable {
     private String id;
     private String title;
     private List<String> steps;
@@ -12,12 +12,12 @@ public class Recipe implements Serializable {
     private String authorID;
     private String description;
 
-    private List<Ingredient> ingredients;
+    private List<AdminIngredient> ingredients;
 
-    public Recipe() {
+    public AdminRecipe() {
     }
 
-    public Recipe(String title, List<String> steps, Boolean status, String imageUrl, List<Ingredient> ingredients, String description) {
+    public AdminRecipe(String title, List<String> steps, Boolean status, String imageUrl, List<AdminIngredient> ingredients, String description) {
         this.title = title;
         this.steps = steps;
         this.status = status;
@@ -26,7 +26,7 @@ public class Recipe implements Serializable {
         this.description = description;
     }
 
-    public Recipe(String title, List<String> steps, Boolean status, String imageUrl) {
+    public AdminRecipe(String title, List<String> steps, Boolean status, String imageUrl) {
         this.title = title;
         this.steps = steps;
         this.status = status;
@@ -49,11 +49,11 @@ public class Recipe implements Serializable {
         this.id = id;
     }
 
-    public List<Ingredient> getIngredients() {
+    public List<AdminIngredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<Ingredient> ingredients) {
+    public void setIngredients(List<AdminIngredient> ingredients) {
         this.ingredients = ingredients;
     }
 

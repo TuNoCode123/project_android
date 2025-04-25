@@ -4,9 +4,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.formular_cookie.Account;
-import com.example.formular_cookie.HomeFragment;
-import com.example.formular_cookie.PostRecipeFragment;
+import com.example.formular_cookie.fragment.Account;
+import com.example.formular_cookie.fragment.HomeFragment;
+import com.example.formular_cookie.fragment.PostRecipeFragment;
 import com.example.formular_cookie.R;
 import com.example.formular_cookie.fragment.RecipeDetailFragment;
 import com.example.formular_cookie.fragment.RecipeSearchFragment;

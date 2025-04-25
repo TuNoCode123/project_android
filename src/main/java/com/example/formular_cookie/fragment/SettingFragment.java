@@ -1,4 +1,4 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.formular_cookie.LoginActivity;
+import com.example.formular_cookie.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 //add this to manifest

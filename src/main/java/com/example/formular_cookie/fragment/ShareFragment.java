@@ -1,4 +1,4 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.fragment;
 
 import static android.content.ContentValues.TAG;
 
@@ -15,25 +15,22 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.example.formular_cookie.R;
+import com.example.formular_cookie.model.ShareItem;
+import com.example.formular_cookie.adapter.ShareAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class Sharefrag extends Fragment {
+public class ShareFragment extends Fragment {
     private RecyclerView recyclerView;
     private TextView emptyView;
     private List<ShareItem> items;
-    private Shareadapter adapter;
+    private ShareAdapter adapter;
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
@@ -43,7 +40,7 @@ public class Sharefrag extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         items = new ArrayList<>();
-        adapter = new Shareadapter(getContext(), items);
+        adapter = new ShareAdapter(getContext(), items);
         emptyView = view.findViewById(R.id.emptyView);
         recyclerView.setAdapter(adapter);
 

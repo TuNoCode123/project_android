@@ -1,4 +1,4 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.fragment;
 
 import static android.content.ContentValues.TAG;
 
@@ -22,7 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class signin extends Fragment {
+public class SignInFragment extends Fragment {
     EditText username, email, password, repassword;
     Button button;
     private FirebaseAuth mAuth;

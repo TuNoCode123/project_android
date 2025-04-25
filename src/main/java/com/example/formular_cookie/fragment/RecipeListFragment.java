@@ -1,4 +1,4 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.fragment;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,18 +11,22 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.formular_cookie.model.AdminIngredient;
+import com.example.formular_cookie.R;
+import com.example.formular_cookie.model.AdminRecipe;
+import com.example.formular_cookie.adapter.AdminRecipeAdapter;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApproveRecipesFragment extends Fragment {
+public class RecipeListFragment extends Fragment {
 
-    private List<Recipe> recipeList;
+    private List<AdminRecipe> adminRecipeList;
     private RecyclerView recyclerView;
-    private RecipeAdapter adapter;
+    private AdminRecipeAdapter adapter;
     private TextView tvEmptyList;
-
     private FirebaseFirestore db = FirebaseFirestore.getInstance();;
 
     @Nullable
@@ -30,47 +34,46 @@ public class ApproveRecipesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_recipe_list, container, false);
+
         recyclerView = view.findViewById(R.id.rv_recipe_list);
         tvEmptyList = view.findViewById(R.id.tv_empty_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        recipeList = new ArrayList<>();
-        loadRecipesFromFirebase();
-        adapter = new RecipeAdapter(recipeList, this::openDetail);
+        adminRecipeList = new ArrayList<>();
+        adapter = new AdminRecipeAdapter(adminRecipeList, this::openDetail);
         recyclerView.setAdapter(adapter);
+        loadRecipesFromFirebase();
 
         return view;
     }
-
     private void loadRecipesFromFirebase() {
         db.collection("recipes")
-                .whereEqualTo("status", false) // lọc theo status = false
+                .whereEqualTo("status", true) // lọc theo status = true
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    recipeList.clear(); // clear danh sách cũ trước khi thêm mới
+                    adminRecipeList.clear(); // clear danh sách cũ trước khi thêm mới
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                        Recipe recipe = doc.toObject(Recipe.class);
-                        recipe.setId(doc.getId());
-                        recipeList.add(recipe);
+                        AdminRecipe adminRecipe = doc.toObject(AdminRecipe.class);
+                        adminRecipe.setId(doc.getId());
+                        adminRecipeList.add(adminRecipe);
 
-                        List<Ingredient> ingredients = recipe.getIngredients();
-                        if (ingredients != null) {
-                            for (Ingredient ingredient : ingredients) {
-                                Log.d("RECIPE", "Ingredient - Name: " + ingredient.getName() +
-                                        ", Amount: " + ingredient.getAmount() +
-                                        ", Unit: " + ingredient.getUnit());
+                        List<AdminIngredient> adminIngredients = adminRecipe.getIngredients();
+                        if (adminIngredients != null) {
+                            for (AdminIngredient adminIngredient : adminIngredients) {
+                                Log.d("RECIPE", "Ingredient - Name: " + adminIngredient.getName() +
+                                        ", Amount: " + adminIngredient.getAmount() +
+                                        ", Unit: " + adminIngredient.getUnit());
                             }
                         }
 
-                        Log.d("RECIPE", "Thêm: " + recipe.getTitle());
+                        Log.d("RECIPE", "Thêm: " + adminRecipe.getTitle());
                     }
 
                     adapter.notifyDataSetChanged();
 
                     // Kiểm tra danh sách rỗng
-                    if (recipeList.isEmpty()) {
+                    if (adminRecipeList.isEmpty()) {
                         tvEmptyList.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
                     } else {
@@ -84,12 +87,14 @@ public class ApproveRecipesFragment extends Fragment {
                 });
     }
 
-    private void openDetail(Recipe recipe) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("recipe", recipe);
-        bundle.putBoolean("isApproveMode", true);
 
-        RecipeDetailFragment detailFragment = new RecipeDetailFragment();
+
+    private void openDetail(AdminRecipe adminRecipe) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("recipe", adminRecipe);
+        bundle.putBoolean("isEditMode", true);
+
+        AdminRecipeDetailFragment detailFragment = new AdminRecipeDetailFragment();
         detailFragment.setArguments(bundle);
 
         requireActivity().getSupportFragmentManager()

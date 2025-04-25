@@ -13,6 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.formular_cookie.fragment.LoginFragment;
+import com.example.formular_cookie.fragment.SignInFragment;
+
 public class LoginActivity extends AppCompatActivity {
 
     private TextView tvLogin, tvRegister;
@@ -22,19 +25,19 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         tvLogin = findViewById(R.id.tvLogin);
         tvRegister = findViewById(R.id.tvRegister);
-        switchToFragment(new login());
+        switchToFragment(new LoginFragment());
 
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchToFragment(new login());
+                switchToFragment(new LoginFragment());
                 animateTextColor(tvLogin, tvRegister);
             }
         });
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchToFragment(new signin());
+                switchToFragment(new SignInFragment());
                 animateTextColor(tvRegister, tvLogin);
             }
         });

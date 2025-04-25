@@ -1,8 +1,12 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.utils;
 
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+
+import com.example.formular_cookie.CloudinaryService;
+import com.example.formular_cookie.model.CloudinaryResponse;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

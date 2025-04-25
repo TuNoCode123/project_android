@@ -1,28 +1,27 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
+import com.example.formular_cookie.R;
+import com.example.formular_cookie.model.ShareItem;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 //tao adapter de hien thi du lieu cua cac thuoc tinh trong recyclerview
-public class Shareadapter extends RecyclerView.Adapter<Shareadapter.ItemHolder> {
+public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ItemHolder> {
     Context context;
     List<ShareItem> items;
 
-    public Shareadapter(Context context, List<ShareItem> items){
+    public ShareAdapter(Context context, List<ShareItem> items){
         this.items = items;
         this.context = context;
     }

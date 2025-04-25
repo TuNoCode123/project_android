@@ -1,4 +1,4 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.fragment;
 
 import static android.content.ContentValues.TAG;
 
@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.formular_cookie.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,16 +52,16 @@ public class Account extends Fragment {
         AtomicReference<Fragment> selectedFragment = new AtomicReference<>();
         underlineShare = view.findViewById(R.id.underlineShare);
         underlineLike = view.findViewById(R.id.underlineLike);
-        switchToFragment(new Sharefrag());
+        switchToFragment(new ShareFragment());
         Share.setOnClickListener(v -> {
-            switchToFragment(new Sharefrag());
+            switchToFragment(new ShareFragment());
             animateTextColor(Share, like);
             underlineShare.setVisibility(View.VISIBLE);
             underlineLike.setVisibility(View.INVISIBLE);
         });
 
         like.setOnClickListener(v -> {
-            switchToFragment(new Likefrag());
+            switchToFragment(new LikeFragment());
             animateTextColor(like, Share);
             underlineLike.setVisibility(View.VISIBLE);
             underlineShare.setVisibility(View.INVISIBLE);

@@ -1,4 +1,4 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,40 +9,43 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.formular_cookie.R;
+import com.example.formular_cookie.model.AdminRecipe;
+
 import java.util.List;
 
-public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
+public class AdminRecipeAdapter extends RecyclerView.Adapter<AdminRecipeAdapter.ViewHolder> {
 
     public interface OnItemClickListener {
-        void onItemClick(Recipe recipe);
+        void onItemClick(AdminRecipe adminRecipe);
     }
 
-    private List<Recipe> recipeList;
+    private List<AdminRecipe> adminRecipeList;
     private OnItemClickListener listener;
 
-    public RecipeAdapter(List<Recipe> recipeList, OnItemClickListener listener) {
-        this.recipeList = recipeList;
+    public AdminRecipeAdapter(List<AdminRecipe> adminRecipeList, OnItemClickListener listener) {
+        this.adminRecipeList = adminRecipeList;
         this.listener = listener;
     }
 
     @NonNull
     @Override
-    public RecipeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AdminRecipeAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_recipe_card, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeAdapter.ViewHolder holder, int position) {
-        Recipe recipe = recipeList.get(position);
-        holder.title.setText(recipe.getTitle());
-        holder.viewDetail.setOnClickListener(v -> listener.onItemClick(recipe));
+    public void onBindViewHolder(@NonNull AdminRecipeAdapter.ViewHolder holder, int position) {
+        AdminRecipe adminRecipe = adminRecipeList.get(position);
+        holder.title.setText(adminRecipe.getTitle());
+        holder.viewDetail.setOnClickListener(v -> listener.onItemClick(adminRecipe));
     }
 
     @Override
     public int getItemCount() {
-        return recipeList.size();
+        return adminRecipeList.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

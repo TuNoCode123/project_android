@@ -1,4 +1,4 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.fragment;
 
 import static android.content.ContentValues.TAG;
 
@@ -15,6 +15,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.formular_cookie.R;
+import com.example.formular_cookie.adapter.ShareAdapter;
+import com.example.formular_cookie.model.ShareItem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,13 +30,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Likefrag extends Fragment {
+public class LikeFragment extends Fragment {
 
     private List<String> likedRecipeIds;
     private TextView emptyView;
     private RecyclerView recyclerView;
     private List<ShareItem> items;
-    private Shareadapter likeadapter;
+    private ShareAdapter likeadapter;
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Nullable
@@ -51,7 +54,7 @@ public class Likefrag extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         items = new ArrayList<>();
-        likeadapter = new Shareadapter(getContext(), items);
+        likeadapter = new ShareAdapter(getContext(), items);
         recyclerView.setAdapter(likeadapter);
         emptyView = view.findViewById(R.id.emptyView);
 

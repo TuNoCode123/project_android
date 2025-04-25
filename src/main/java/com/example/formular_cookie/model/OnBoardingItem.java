@@ -1,4 +1,4 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.model;
 
 public class OnBoardingItem {
     private final int imageResId;

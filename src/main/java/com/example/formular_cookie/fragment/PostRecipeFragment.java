@@ -1,4 +1,4 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.fragment;
 
 import android.Manifest;
 import android.app.Activity;
@@ -17,6 +17,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
 import com.bumptech.glide.Glide;
+import com.example.formular_cookie.model.AdminIngredient;
+import com.example.formular_cookie.utils.CloudinaryUploader;
+import com.example.formular_cookie.R;
+import com.example.formular_cookie.model.AdminRecipe;
+import com.example.formular_cookie.utils.UploadCallback;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
@@ -34,7 +39,7 @@ public class PostRecipeFragment extends Fragment {
     private Button btnSelectImage, btnSubmit;
     private static final String TAG = "PostRecipeFragment";
     private Bundle args;
-    private Recipe recipe;
+    private AdminRecipe adminRecipe;
     private Boolean isEditMode = false;
     private String authorID = "admin";
 
@@ -121,20 +126,20 @@ public class PostRecipeFragment extends Fragment {
     }
 
     private void showRecipeInfoIfEdit() {
-        recipe = (Recipe) args.getSerializable("recipe");
+        adminRecipe = (AdminRecipe) args.getSerializable("recipe");
         isEditMode = args.getBoolean("isEditMode", false);
         Log.d(TAG, "editMode: " + isEditMode);
         if (isEditMode) {
-            etTitle.setText(recipe.getTitle());
-            etDescription.setText(recipe.getDescription());
-            authorID = recipe.getAuthorID();
-            for(Ingredient ingredient : recipe.getIngredients()){
-                addIngredientRow(ingredient.getName(), ingredient.getAmount(), ingredient.getUnit());
+            etTitle.setText(adminRecipe.getTitle());
+            etDescription.setText(adminRecipe.getDescription());
+            authorID = adminRecipe.getAuthorID();
+            for(AdminIngredient adminIngredient : adminRecipe.getIngredients()){
+                addIngredientRow(adminIngredient.getName(), adminIngredient.getAmount(), adminIngredient.getUnit());
             }
-            for(String step : recipe.getSteps()){
+            for(String step : adminRecipe.getSteps()){
                 addStepRow(step);
             }
-            imageUrl = recipe.getImageUrl(); // Giữ lại ảnh cũ
+            imageUrl = adminRecipe.getImageUrl(); // Giữ lại ảnh cũ
 
             if (imageUrl != null && !imageUrl.isEmpty()) {
                 Glide.with(this)
@@ -193,7 +198,7 @@ public class PostRecipeFragment extends Fragment {
             return;
         }
 
-        List<Ingredient> ingredientsList = new ArrayList<>();
+        List<AdminIngredient> ingredientsList = new ArrayList<>();
         for (int i = 0; i < ingredientsContainer.getChildCount(); i++) {
             View row = ingredientsContainer.getChildAt(i);
             EditText etName = row.findViewById(R.id.et_ingredient_name);
@@ -205,7 +210,7 @@ public class PostRecipeFragment extends Fragment {
             String unit = etUnit.getText().toString().trim();
 
             if (!name.isEmpty() && !amount.isEmpty()) {
-                ingredientsList.add(new Ingredient(name, amount, unit));
+                ingredientsList.add(new AdminIngredient(name, amount, unit));
             }
         }
 
@@ -223,12 +228,12 @@ public class PostRecipeFragment extends Fragment {
         }
     }
 
-    private void saveRecipeToFirebase(String title, List<Ingredient> ingredients, List<String> steps, String imageUrl, String description, String authorID) {
+    private void saveRecipeToFirebase(String title, List<AdminIngredient> adminIngredients, List<String> steps, String imageUrl, String description, String authorID) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference recipeRef;
 
-        if (isEditMode && recipe != null && recipe.getId() != null) {
-            recipeRef = db.collection("recipes").document(recipe.getId());
+        if (isEditMode && adminRecipe != null && adminRecipe.getId() != null) {
+            recipeRef = db.collection("recipes").document(adminRecipe.getId());
         } else {
             recipeRef = db.collection("recipes").document();
         }
@@ -242,11 +247,11 @@ public class PostRecipeFragment extends Fragment {
         recipeData.put("authorID", authorID);
 
         List<Map<String, Object>> ingredientMaps = new ArrayList<>();
-        for (Ingredient ingredient : ingredients) {
+        for (AdminIngredient adminIngredient : adminIngredients) {
             Map<String, Object> ingMap = new HashMap<>();
-            ingMap.put("name", ingredient.getName());
-            ingMap.put("amount", ingredient.getAmount());
-            ingMap.put("unit", ingredient.getUnit());
+            ingMap.put("name", adminIngredient.getName());
+            ingMap.put("amount", adminIngredient.getAmount());
+            ingMap.put("unit", adminIngredient.getUnit());
             ingredientMaps.add(ingMap);
         }
         recipeData.put("ingredients", ingredientMaps);

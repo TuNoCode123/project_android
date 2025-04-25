@@ -1,4 +1,4 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.formular_cookie.model.OnBoardingItem;
+import com.example.formular_cookie.R;
 
 import java.util.List;
 

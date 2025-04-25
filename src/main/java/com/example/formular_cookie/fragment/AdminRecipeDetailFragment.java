@@ -1,4 +1,4 @@
-package com.example.formular_cookie;
+package com.example.formular_cookie.fragment;
 
 
 import android.os.Bundle;
@@ -15,26 +15,29 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
+import com.example.formular_cookie.model.AdminIngredient;
+import com.example.formular_cookie.R;
+import com.example.formular_cookie.model.AdminRecipe;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import java.util.List;
 
-public class RecipeDetailFragment extends Fragment {
+public class AdminRecipeDetailFragment extends Fragment {
 
     private TextView tvDescription, tvToolbarTitle;
     private ImageView ivImage, btnBack;
     private Button btnEdit, btnDelete;
-    Recipe recipe;
-    List<Recipe> recipeList = null;
+    AdminRecipe adminRecipe;
+    List<AdminRecipe> adminRecipeList = null;
     private boolean isEditMode;
     private boolean isApproveMode;
     private Bundle args;
     private LinearLayout llIngredients, llSteps;
 
 
-    public RecipeDetailFragment() {
+    public AdminRecipeDetailFragment() {
         // Required empty public constructor
     }
 
@@ -53,7 +56,7 @@ public class RecipeDetailFragment extends Fragment {
             boolean isUpdated = result.getBoolean("isUpdated", false);
             if (isUpdated) {
                 // Cập nhật lại dữ liệu từ Firestore
-                fetchRecipeFromFirestore(recipe.getId());
+                fetchRecipeFromFirestore(adminRecipe.getId());
             }
         });
     }
@@ -64,22 +67,22 @@ public class RecipeDetailFragment extends Fragment {
         db.collection("recipes").document(recipeId).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        Recipe updatedRecipe = documentSnapshot.toObject(Recipe.class);
+                        AdminRecipe updatedAdminRecipe = documentSnapshot.toObject(AdminRecipe.class);
                         // Cập nhật lại UI với dữ liệu mới
-                        updateUI(updatedRecipe);
+                        updateUI(updatedAdminRecipe);
                     }
                 });
     }
 
-    private void updateUI(Recipe updatedRecipe) {
+    private void updateUI(AdminRecipe updatedAdminRecipe) {
         // Cập nhật lại thông tin UI với dữ liệu mới
-        tvToolbarTitle.setText(updatedRecipe.getTitle());
-        tvDescription.setText(updatedRecipe.getDescription());
+        tvToolbarTitle.setText(updatedAdminRecipe.getTitle());
+        tvDescription.setText(updatedAdminRecipe.getDescription());
         // Cập nhật nguyên liệu
         llIngredients.removeAllViews();
-        for (Ingredient ingredient : updatedRecipe.getIngredients()) {
+        for (AdminIngredient adminIngredient : updatedAdminRecipe.getIngredients()) {
             TextView ingredientTextView = new TextView(getContext());
-            ingredientTextView.setText(ingredient.getName() + ": " + ingredient.getAmount() + " " + ingredient.getUnit());
+            ingredientTextView.setText(adminIngredient.getName() + ": " + adminIngredient.getAmount() + " " + adminIngredient.getUnit());
             ingredientTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
             ingredientTextView.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -90,7 +93,7 @@ public class RecipeDetailFragment extends Fragment {
 
         // Cập nhật các bước
         llSteps.removeAllViews();
-        for (String step : updatedRecipe.getSteps()) {
+        for (String step : updatedAdminRecipe.getSteps()) {
             TextView stepTextView = new TextView(getContext());
             stepTextView.setText(step);
             stepTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
@@ -102,7 +105,7 @@ public class RecipeDetailFragment extends Fragment {
         }
 
         // Cập nhật hình ảnh
-        String imageUrl = updatedRecipe.getImageUrl();
+        String imageUrl = updatedAdminRecipe.getImageUrl();
         if (imageUrl != null && !imageUrl.isEmpty()) {
             Glide.with(this)
                     .load(imageUrl)
@@ -129,10 +132,10 @@ public class RecipeDetailFragment extends Fragment {
 
         args = getArguments();
         if (args != null) {
-            recipe = (Recipe) args.getSerializable("recipe");
+            adminRecipe = (AdminRecipe) args.getSerializable("recipe");
             isEditMode = args.getBoolean("isEditMode", false);
             isApproveMode = args.getBoolean("isApproveMode", false);
-            recipeList = (List<Recipe>) args.getSerializable("recipeList");
+            adminRecipeList = (List<AdminRecipe>) args.getSerializable("recipeList");
             if (isEditMode) {
                 btnEdit.setText(getString(R.string.text_edit));
                 btnDelete.setText(getString(R.string.text_delete));
@@ -140,12 +143,12 @@ public class RecipeDetailFragment extends Fragment {
                 btnEdit.setText(getString(R.string.text_confirm));
                 btnDelete.setText(getString(R.string.text_cancel));
             }
-            tvToolbarTitle.setText(recipe.getTitle());
-            tvDescription.setText(recipe.getDescription());
+            tvToolbarTitle.setText(adminRecipe.getTitle());
+            tvDescription.setText(adminRecipe.getDescription());
             //hien thi nguyen lieu tren tung dong
-            for (Ingredient ingredient : recipe.getIngredients()) {
+            for (AdminIngredient adminIngredient : adminRecipe.getIngredients()) {
                 TextView ingredientTextView = new TextView(getContext());
-                ingredientTextView.setText(ingredient.getName() + ": " + ingredient.getAmount() + " " + ingredient.getUnit());
+                ingredientTextView.setText(adminIngredient.getName() + ": " + adminIngredient.getAmount() + " " + adminIngredient.getUnit());
                 ingredientTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
                 ingredientTextView.setLayoutParams(new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -155,7 +158,7 @@ public class RecipeDetailFragment extends Fragment {
             }
 
             //hien thi cac tung tren tung dong
-            for (String step : recipe.getSteps()) {
+            for (String step : adminRecipe.getSteps()) {
                 TextView stepTextView = new TextView(getContext());
                 stepTextView.setText(step);
                 stepTextView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
@@ -167,7 +170,7 @@ public class RecipeDetailFragment extends Fragment {
             }
 
 
-            String imageUrl = recipe.getImageUrl();
+            String imageUrl = adminRecipe.getImageUrl();
             Log.d("Recipe", "Image URL: " + imageUrl);
 
             if (imageUrl != null && !imageUrl.isEmpty()) {
@@ -186,7 +189,7 @@ public class RecipeDetailFragment extends Fragment {
         );
 
         btnEdit.setOnClickListener(v -> {
-            if (recipe != null && isEditMode) {
+            if (adminRecipe != null && isEditMode) {
                 PostRecipeFragment editRecipe = new PostRecipeFragment();
                 if (args != null) {
                     editRecipe.setArguments(args);
@@ -198,12 +201,12 @@ public class RecipeDetailFragment extends Fragment {
                         .addToBackStack(null)
                         .commit();
 
-            } else if (recipe != null && isApproveMode) {
-                recipe.setStatus(true);
+            } else if (adminRecipe != null && isApproveMode) {
+                adminRecipe.setStatus(true);
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                DocumentReference recipeRef = db.collection("recipes").document(recipe.getId());
+                DocumentReference recipeRef = db.collection("recipes").document(adminRecipe.getId());
 
-                recipeRef.update("status", recipe.getStatus())
+                recipeRef.update("status", adminRecipe.getStatus())
                         .addOnSuccessListener(aVoid -> {
                             requireActivity().getSupportFragmentManager().popBackStack();
                         })
@@ -216,10 +219,10 @@ public class RecipeDetailFragment extends Fragment {
 
 
         btnDelete.setOnClickListener(v -> {
-            if (recipe != null) {
+            if (adminRecipe != null) {
                 // Xóa công thức khỏi Firestore
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.collection("recipes").document(recipe.getId())
+                db.collection("recipes").document(adminRecipe.getId())
                         .delete()
                         .addOnSuccessListener(aVoid -> {
                             Log.d("RecipeDetail", "Đã xóa công thức khỏi Firestore");
