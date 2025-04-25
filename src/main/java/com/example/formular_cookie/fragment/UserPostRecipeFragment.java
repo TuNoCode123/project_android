@@ -22,6 +22,8 @@ import com.example.formular_cookie.utils.CloudinaryUploader;
 import com.example.formular_cookie.R;
 import com.example.formular_cookie.model.AdminRecipe;
 import com.example.formular_cookie.utils.UploadCallback;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
@@ -41,16 +43,14 @@ public class UserPostRecipeFragment extends Fragment {
     private Bundle args;
     private AdminRecipe adminRecipe;
     private Boolean isEditMode = false;
-    private String authorID = "user";
-
-
+    private String authorID;
 
     private ActivityResultLauncher<String> permissionLauncher;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_post_recipe, container, false);
 
         etTitle = view.findViewById(R.id.et_recipe_title);
@@ -64,6 +64,18 @@ public class UserPostRecipeFragment extends Fragment {
         stepsContainer = view.findViewById(R.id.steps_container);
         btnAddStep = view.findViewById(R.id.btn_add_step);
 
+        // Get current user ID
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            authorID = currentUser.getUid();
+        } else {
+            // Handle the case where the user is not logged in (optional, depends on app
+            // flow)
+            Log.e(TAG, "User not logged in!");
+            Toast.makeText(getContext(), "Lỗi: Người dùng chưa đăng nhập.", Toast.LENGTH_SHORT).show();
+            // Optionally, navigate back or disable functionality
+        }
+
         permissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
                 isGranted -> {
@@ -72,45 +84,42 @@ public class UserPostRecipeFragment extends Fragment {
                     } else {
                         Toast.makeText(getContext(), "Bạn cần cấp quyền để chọn ảnh", Toast.LENGTH_SHORT).show();
                     }
-                }
-        );
+                });
 
         // Đăng ký image picker launcher
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                        selectedImageUri = result.getData().getData();  // Ảnh mới chọn
+                        selectedImageUri = result.getData().getData(); // Ảnh mới chọn
                         ivPreview.setImageURI(selectedImageUri); // Hiển thị ảnh mới chọn
 
                         // 🧵 UPLOAD ẢNH SAU KHI CHỌN
                         new Thread(() -> {
-                            new CloudinaryUploader().uploadImage(requireContext(), selectedImageUri, new UploadCallback() {
-                                @Override
-                                public void onUploadSuccess(String uploadedUrl) {
-                                    imageUrl = uploadedUrl;
-                                    requireActivity().runOnUiThread(() ->
-                                            Toast.makeText(getContext(), "Tải ảnh thành công", Toast.LENGTH_SHORT).show()
-                                    );
-                                }
+                            new CloudinaryUploader().uploadImage(requireContext(), selectedImageUri,
+                                    new UploadCallback() {
+                                        @Override
+                                        public void onUploadSuccess(String uploadedUrl) {
+                                            imageUrl = uploadedUrl;
+                                            requireActivity().runOnUiThread(() -> Toast
+                                                    .makeText(getContext(), "Tải ảnh thành công", Toast.LENGTH_SHORT)
+                                                    .show());
+                                        }
 
-                                @Override
-                                public void onUploadFailure(String errorMessage) {
-                                    requireActivity().runOnUiThread(() ->
-                                            Toast.makeText(getContext(), "Lỗi upload ảnh: " + errorMessage, Toast.LENGTH_SHORT).show()
-                                    );
-                                }
-                            });
+                                        @Override
+                                        public void onUploadFailure(String errorMessage) {
+                                            requireActivity().runOnUiThread(() -> Toast.makeText(getContext(),
+                                                    "Lỗi upload ảnh: " + errorMessage, Toast.LENGTH_SHORT).show());
+                                        }
+                                    });
                         }).start();
                     }
-                }
-        );
-
+                });
 
         args = getArguments();
-        if(args != null){
+        if (args != null) {
             showRecipeInfoIfEdit();
-        }else {
+        } else {
             // Add default one row
             addIngredientRow(null, null, null);
             addStepRow(null);
@@ -132,11 +141,14 @@ public class UserPostRecipeFragment extends Fragment {
         if (isEditMode) {
             etTitle.setText(adminRecipe.getTitle());
             etDescription.setText(adminRecipe.getDescription());
-            authorID = adminRecipe.getAuthorID();
-            for(AdminIngredient adminIngredient : adminRecipe.getIngredients()){
+            // authorID is already set from the current user, no need to overwrite unless
+            // you specifically want to keep the original author in edit mode.
+            // If you want to keep the original author:
+            // authorID = adminRecipe.getAuthorID();
+            for (AdminIngredient adminIngredient : adminRecipe.getIngredients()) {
                 addIngredientRow(adminIngredient.getName(), adminIngredient.getAmount(), adminIngredient.getUnit());
             }
-            for(String step : adminRecipe.getSteps()){
+            for (String step : adminRecipe.getSteps()) {
                 addStepRow(step);
             }
             imageUrl = adminRecipe.getImageUrl(); // Giữ lại ảnh cũ
@@ -150,6 +162,7 @@ public class UserPostRecipeFragment extends Fragment {
             btnSubmit.setText("Lưu");
         }
     }
+
     private void addIngredientRow(String name, String amount, String unit) {
         View row = LayoutInflater.from(getContext()).inflate(R.layout.ingredient_row, ingredientsContainer, false);
 
@@ -158,9 +171,12 @@ public class UserPostRecipeFragment extends Fragment {
         EditText etUnit = row.findViewById(R.id.et_ingredient_unit);
         Button btnRemove = row.findViewById(R.id.btn_remove_ingredient);
 
-        if (name != null) etName.setText(name);
-        if (amount != null) etAmount.setText(amount);
-        if (unit != null) etUnit.setText(unit);
+        if (name != null)
+            etName.setText(name);
+        if (amount != null)
+            etAmount.setText(amount);
+        if (unit != null)
+            etUnit.setText(unit);
 
         btnRemove.setOnClickListener(v -> ingredientsContainer.removeView(row));
 
@@ -171,7 +187,8 @@ public class UserPostRecipeFragment extends Fragment {
         View row = LayoutInflater.from(getContext()).inflate(R.layout.step_row, stepsContainer, false);
         EditText etStep = row.findViewById(R.id.et_step);
         Button btnRemove = row.findViewById(R.id.btn_remove_step);
-        if (stepText != null) etStep.setText(stepText);
+        if (stepText != null)
+            etStep.setText(stepText);
         btnRemove.setOnClickListener(v -> stepsContainer.removeView(row));
         stepsContainer.addView(row);
     }
@@ -223,14 +240,23 @@ public class UserPostRecipeFragment extends Fragment {
                 stepsList.add(step);
             }
         }
-        if(imageUrl != null){
+        if (imageUrl != null) {
             saveRecipeToFirebase(title, ingredientsList, stepsList, imageUrl, description, authorID);
         }
     }
 
-    private void saveRecipeToFirebase(String title, List<AdminIngredient> adminIngredients, List<String> steps, String imageUrl, String description, String authorID) {
+    private void saveRecipeToFirebase(String title, List<AdminIngredient> adminIngredients, List<String> steps,
+            String imageUrl, String description, String authorID) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference recipeRef;
+
+        // Ensure authorID is not null before saving
+        if (authorID == null) {
+            Log.e(TAG, "Author ID is null, cannot save recipe.");
+            Toast.makeText(getContext(), "Lỗi: Không thể lưu công thức do thiếu ID người dùng.", Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
 
         if (isEditMode && adminRecipe != null && adminRecipe.getId() != null) {
             recipeRef = db.collection("recipes").document(adminRecipe.getId());
@@ -259,7 +285,8 @@ public class UserPostRecipeFragment extends Fragment {
         recipeRef.set(recipeData)
                 .addOnSuccessListener(unused -> {
                     Toast.makeText(getContext(), "Lưu công thức thành công!", Toast.LENGTH_SHORT).show();
-                    if (!isEditMode) clearFields();
+                    if (!isEditMode)
+                        clearFields();
                     else {
                         requireActivity().getSupportFragmentManager().popBackStack();
                         // Gửi kết quả về để load lại dữ liệu trong RecipeDetailFragment
@@ -268,11 +295,10 @@ public class UserPostRecipeFragment extends Fragment {
                         getParentFragmentManager().setFragmentResult("recipe_update_result", result);
                     }
 
-
                 })
-                .addOnFailureListener(e -> Toast.makeText(getContext(), "Lỗi lưu: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                .addOnFailureListener(
+                        e -> Toast.makeText(getContext(), "Lỗi lưu: " + e.getMessage(), Toast.LENGTH_SHORT).show());
     }
-
 
     private void clearFields() {
         etTitle.setText("");

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Food App</string>
+    <string name="navigation_drawer_open">Open menu</string>
+    <string name="navigation_drawer_close">Close menu</string>
+    <string name="title_approve">Approve</string>
+    <string name="title_post">Post</string>
+    <string name="title_list">Recipes</string>
+    <string name="title_users">Users</string>
+    <string name="title_account">Account</string>
+    <string name="title_logout">Logout</string>
+    <string name="hint_recipe_name">Recipe name</string>
+    <string name="text_select_image">Select image</string>
+    <string name="recipe_description">Recipe description</string>
+    <string name="text_ingredients">Ingredients</string>
+    <string name="text_add_ingredient">+ Add ingredient</string>
+    <string name="text_steps">Steps</string>
+    <string name="text_add_step">+ Add step</string>
+    <string name="text_post_recipe">Post Recipe</string>
+    <string name="text_delete">Delete</string>
+    <string name="text_edit">Edit</string>
+    <string name="text_confirm">Confirm</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="text_empty_list">Empty list</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_quantity">Quantity</string>
+    <string name="hint_unit">Unit</string>
+    <string name="text_view_details">View Details</string>
+    <string name="hint_step_description">Step description</string>
+    <string name="search_prompt">Enter the recipe name you're looking for</string>
+    <string name="no_results">No recipes found. Please try another keyword.</string>
+    <string name="search_error">Error while searching. Please try again.</string>
+    <string name="network_error">Network error. Please check your connection and try again.</string>
+    <string name="unknown_author">Unknown</string>
+    <string name="summary">Summary</string>
+    <string name="adminIngredients">Ingredients</string>
+    <string name="instructions">Instructions</string>
+    <string name="search_for_recipes">Search recipes</string>
+    <string name="search_recipes">SEARCH</string>
+    <string name="no_favorites">No favorite recipes</string>
+    <string name="favorite_recipes">Favorite recipes:</string>
+    <string name="posted_recipes">Posted recipes:</string>
+    <string name="no_posted_recipes">The user hasn't posted any recipes yet.</string>
+    <string name="username_label">Username</string>
+</resources>
