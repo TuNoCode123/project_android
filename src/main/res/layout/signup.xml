@@ -5,96 +5,52 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
+    android:background="#FFFDD0"
     android:padding="20dp">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Tên tài khoản"
-        android:textColor="#000000"
-        android:fontFamily="@font/montserrat_medium"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
 
     <EditText
         android:id="@+id/username"
-        android:textColor="#000000"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@drawable/edit_text_background"
+        android:background="@android:color/white"
         android:hint="Tên tài khoản"
         android:padding="12dp"
-        android:fontFamily="@font/montserrat_medium"
         android:textSize="16sp" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat_medium"
-        android:text="Email"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
 
     <EditText
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:fontFamily="@font/montserrat_medium"
-        android:background="@drawable/edit_text_background"
-        android:hint="Email"
+        android:background="@android:color/white"
+        android:hint="email"
         android:padding="12dp"
-        android:textColor="#000000"
         android:textSize="16sp" />
-    <TextView
-        android:layout_width="match_parent"
-        android:textColor="#000000"
-        android:layout_height="wrap_content"
-        android:text="Mật khẩu"
-        android:fontFamily="@font/montserrat_medium"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
 
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
-        android:textColor="#000000"
         android:layout_height="50dp"
-        android:background="@drawable/edit_text_background"
+        android:background="@android:color/white"
         android:hint="Mật khẩu"
-        android:fontFamily="@font/montserrat_medium"
         android:inputType="textPassword"
         android:padding="12dp"
         android:textSize="16sp" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Nhập lại mật khẩu"
-        android:fontFamily="@font/montserrat_medium"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
 
     <EditText
         android:id="@+id/repassword"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="Nhập lại mật khẩu"
-        android:background="@drawable/edit_text_background"
+        android:background="@android:color/white"
         android:padding="12dp"
-        android:fontFamily="@font/montserrat_medium"
         android:textSize="16sp"
-        android:inputType="textPassword"
-        android:layout_marginBottom="6dp"/>
+        android:inputType="textPassword"/>
 
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:backgroundTint="#FF9800"
-        android:fontFamily="@font/montserrat_medium"
         android:text="Đăng ký"
         android:textColor="@android:color/white"
         android:textStyle="bold" />

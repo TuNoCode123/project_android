@@ -9,13 +9,9 @@
         android:icon="@drawable/ic_search"
         android:title="Tìm kiếm" />
     <item
-        android:id="@+id/nav_smart_cooking"
-        android:icon="@drawable/ic_mic"
-        android:title="Nấu ăn thông minh" />
-    <item
         android:id="@+id/nav_shopping"
-        android:icon="@drawable/ic_cart"
-        android:title="Mua sắm" />
+        android:icon="@drawable/ic_note_stack_add"
+        android:title="Đăng bài" />
     <item
         android:id="@+id/nav_account"
         android:icon="@drawable/ic_account"
