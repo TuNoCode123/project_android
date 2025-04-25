@@ -2,19 +2,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-
     android:padding="24dp"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    android:background="@color/background_light">
 
-<!--    android:background="@color/background_light"-->
+    <ImageView
+        android:id="@+id/iv_user_avatar"
+        android:layout_marginTop="60dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_user_avatar"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="User Avatar"
+        android:background="@drawable/placeholder_avatar"
+        android:padding="8dp" />
+
     <TextView
         android:id="@+id/tv_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tên người dùng"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:textStyle="bold"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/primary_text" />
 
     <TextView
         android:id="@+id/tv_user_email"
@@ -22,15 +33,20 @@
         android:layout_height="wrap_content"
         android:text="Email người dùng"
         android:textSize="16sp"
-        android:layout_marginBottom="24dp" />
+        android:layout_marginBottom="24dp"
+        android:textColor="@color/secondary_text" />
 
     <Button
         android:id="@+id/btn_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_logout"
-        android:backgroundTint="#FF5252"
-        android:textColor="#FFFFFF"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp" />
+        android:backgroundTint="@color/button_background"
+        android:textColor="@color/white"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:layout_marginTop="16dp"
+        android:elevation="4dp" />
 </LinearLayout>

@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.example.formular_cookie.fragment.AccountFragment;
+import com.example.formular_cookie.fragment.AdminAccountFragment;
 import com.example.formular_cookie.fragment.ApproveRecipesFragment;
 import com.example.formular_cookie.fragment.PostRecipeFragment;
 import com.example.formular_cookie.fragment.RecipeListFragment;
@@ -49,7 +49,7 @@ public class AdminActivity extends AppCompatActivity {
                 } else if (itemId == R.id.nav_recipe_list) {
                     fragment = new RecipeListFragment();
                 } else if (itemId == R.id.nav_account) {
-                    fragment = new AccountFragment();
+                    fragment = new AdminAccountFragment();
                 } else if (itemId == R.id.nav_manage_users) {
                     fragment = new UserFragment();
                 }

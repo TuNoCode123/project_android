@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.formular_cookie.fragment.Account;
+import com.example.formular_cookie.fragment.AccountFragment;
 import com.example.formular_cookie.fragment.HomeFragment;
 import com.example.formular_cookie.fragment.PostRecipeFragment;
 import com.example.formular_cookie.R;
@@ -70,7 +70,7 @@ public class NavigationManager {
             } else if (tabTag.equals(TAG_POST_RESCIPE_FRAGMENT)) {
                 fragment = new PostRecipeFragment();
             }else if (tabTag.equals(TAG_ACCOUNT)) {
-                fragment = new Account();
+                fragment = new AccountFragment();
             }
             fragmentMap.put(tabTag, fragment);
         }
