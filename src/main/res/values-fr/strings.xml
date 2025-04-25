@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Application Culinaire</string>
+    <string name="back">Retour</string>
     <string name="navigation_drawer_open">Ouvrir le menu</string>
     <string name="navigation_drawer_close">Fermer le menu</string>
+    <string name="language">Langue</string>
     <string name="title_approve">Approuver</string>
     <string name="title_post">Publier</string>
     <string name="title_list">Recettes</string>
@@ -33,6 +35,7 @@
     <string name="network_error">Erreur réseau. Veuillez vérifier votre connexion et réessayer.</string>
     <string name="unknown_author">Inconnu</string>
     <string name="summary">Résumé</string>
+    <string name="sign_out">Se déconnecter</string>
     <string name="adminIngredients">Ingrédients</string>
     <string name="instructions">Instructions</string>
     <string name="search_for_recipes">Rechercher des recettes</string>
@@ -42,4 +45,14 @@
     <string name="posted_recipes">Recettes publiées :</string>
     <string name="no_posted_recipes">"L'utilisateur n'a publié aucune recette."</string>
     <string name="username_label">Nom d\'utilisateur</string>
+    <string name="your_share">Votre partage</string>
+    <string name="liked_recipes">Recettes aimées</string>
+    <string name="greeting_question">Que voulez-vous manger aujourd\'hui ?</string>
+    <string name="new_recipes">Recettes nouvelles</string>
+    <string name="popular_dishes">Plats populaires</string>
+    <string name="cooking_video">Vidéos de cuisine</string>
+    <string name="suggestion">GÉNÉRAL</string>
+    <string name="featured_dishes">PLATS EN VEDETTE</string>
+    <string name="recipes_list">LISTE DES RECETTES</string>
+    <string name="greeting">Bonjour</string>
 </resources>

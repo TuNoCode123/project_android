@@ -3,7 +3,6 @@ package com.example.formular_cookie;
 import android.os.Bundle;
 import android.view.MenuItem;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.formular_cookie.fragment.AdminAccountFragment;
@@ -14,10 +13,9 @@ import com.example.formular_cookie.fragment.UserFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class AdminActivity extends AppCompatActivity {
+public class AdminActivity extends BaseActivity {
     private BottomNavigationView bottomNavigationView;
     private Fragment currentFragment;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +33,7 @@ public class AdminActivity extends AppCompatActivity {
         }
         setupBottomNavigation();
     }
+
     private void setupBottomNavigation() {
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

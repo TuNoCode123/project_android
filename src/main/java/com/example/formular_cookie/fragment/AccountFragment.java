@@ -32,21 +32,23 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class AccountFragment extends Fragment {
     private ImageButton Setting;
-    private TextView username,Share,like;
-    private View underlineShare,underlineLike;
+    private TextView username, Share, like;
+    private View underlineShare, underlineLike;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.account, container, false);
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Setting=view.findViewById(R.id.Setting);
+        Setting = view.findViewById(R.id.Setting);
         Share = view.findViewById(R.id.tabShare);
         like = view.findViewById(R.id.tabLike);
         AtomicReference<Fragment> selectedFragment = new AtomicReference<>();
@@ -66,9 +68,11 @@ public class AccountFragment extends Fragment {
             underlineLike.setVisibility(View.VISIBLE);
             underlineShare.setVisibility(View.INVISIBLE);
         });
+
+        // Sửa lại cách mở SettingFragment - không kết thúc Activity chính
         Setting.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), SettingFragment.class);
-            getActivity().finish();
+            // Không gọi finish() ở đây để không kết thúc Activity chính
             startActivity(intent);
         });
 
@@ -79,7 +83,7 @@ public class AccountFragment extends Fragment {
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
@@ -94,12 +98,14 @@ public class AccountFragment extends Fragment {
         });
 
     }
+
     private void switchToFragment(Fragment fragment) {
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
         transaction.replace(R.id.fragmentContainer, fragment);
         transaction.commit();
     }
+
     private void animateTextColor(final TextView active, final TextView inactive) {
         int colorActive = Color.parseColor("#00AFFF");
         int colorInactive = Color.parseColor("#B0B0B0");

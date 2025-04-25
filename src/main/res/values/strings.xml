@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Food App</string>
+    <string name="back">Quay lại</string>
     <string name="navigation_drawer_open">Mở menu</string>
     <string name="navigation_drawer_close">Đóng menu</string>
+    <string name="language">Ngôn ngữ</string>
     <string name="title_approve">Duyệt</string>
     <string name="title_post">Đăng</string>
     <string name="title_list">Công Thức</string>
@@ -33,6 +35,7 @@
     <string name="network_error">Lỗi mạng. Vui lòng kiểm tra kết nối và thử lại.</string>
     <string name="unknown_author">Không rõ</string>
     <string name="summary">Mô tả</string>
+    <string name="sign_out">Đăng xuất</string>
     <string name="adminIngredients">Nguyên liệu</string>
     <string name="instructions">Hướng dẫn</string>
     <string name="search_for_recipes">Tìm kiếm công thức</string>
@@ -42,4 +45,14 @@
     <string name="posted_recipes">Công thức đã đăng:</string>
     <string name="no_posted_recipes">"Người dùng chưa đăng công thức nào."</string>
     <string name="username_label">Tên người dùng</string>
+    <string name="your_share">Chia sẻ của bạn</string>
+    <string name="liked_recipes">Yêu thích</string>
+    <string name="greeting_question">Hôm nay bạn muốn ăn gì?</string>
+    <string name="new_recipes">Công thức mới</string>
+    <string name="popular_dishes">Món ăn phổ biến</string>
+    <string name="cooking_video">Video nấu ăn</string>
+    <string name="suggestion">GỢI Ý MÓN ĂN</string>
+    <string name="featured_dishes">MÓN ĂN NỔI BẬT</string>
+    <string name="recipes_list">DANH SÁCH MÓN ĂN</string>
+    <string name="greeting">Xin chào</string>
 </resources>

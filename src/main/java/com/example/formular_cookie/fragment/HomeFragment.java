@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
 //            String uid = user.getUid(); // ID duy nhất
             String email = user.getEmail(); // email người dùng
 //            String name = user.getDisplayName(); // tên (nếu có)
-            textView.setText("Xin chào "+email);
+            textView.setText(email);
 //            Uri photo = user.getPhotoUrl(); // avatar (nếu có)
         }
 

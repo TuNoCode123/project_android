@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Food App</string>
+    <string name="back">Back</string>
     <string name="navigation_drawer_open">Open menu</string>
     <string name="navigation_drawer_close">Close menu</string>
+    <string name="language">Language</string>
     <string name="title_approve">Approve</string>
     <string name="title_post">Post</string>
     <string name="title_list">Recipes</string>
@@ -33,6 +35,7 @@
     <string name="network_error">Network error. Please check your connection and try again.</string>
     <string name="unknown_author">Unknown</string>
     <string name="summary">Summary</string>
+    <string name="sign_out">Sign Out</string>
     <string name="adminIngredients">Ingredients</string>
     <string name="instructions">Instructions</string>
     <string name="search_for_recipes">Search recipes</string>
@@ -42,4 +45,14 @@
     <string name="posted_recipes">Posted recipes:</string>
     <string name="no_posted_recipes">The user hasn\'t posted any recipes yet.</string>
     <string name="username_label">Username</string>
+    <string name="your_share">Your Upload</string>
+    <string name="liked_recipes">Favorites</string>
+    <string name="greeting_question">What do you want to eat today?</string>
+    <string name="new_recipes">New Recipes</string>
+    <string name="popular_dishes">Popular Dishes</string>
+    <string name="cooking_video">Cooking Video</string>
+    <string name="suggestion">SUGGESTION</string>
+    <string name="featured_dishes">FEATURED DISHES</string>
+    <string name="recipes_list">RECIPES LIST</string>
+    <string name="greeting">Hi</string>
 </resources>

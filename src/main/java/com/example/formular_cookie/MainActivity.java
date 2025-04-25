@@ -3,7 +3,6 @@ package com.example.formular_cookie;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.formular_cookie.model.Recipe;
 import com.example.formular_cookie.repository.FirebaseRecipeRepository;
@@ -12,7 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.example.formular_cookie.fragment.RecipeSearchFragment;
 
-public class MainActivity extends AppCompatActivity implements RecipeSearchFragment.OnRecipeSelectedListener {
+public class MainActivity extends BaseActivity implements RecipeSearchFragment.OnRecipeSelectedListener {
     private BottomNavigationView bottomNavigationView;
     private NavigationManager navigationManager;
 
@@ -22,17 +21,18 @@ public class MainActivity extends AppCompatActivity implements RecipeSearchFragm
         setContentView(R.layout.activity_main);
 
         // Tải danh sách tên công thức từ Firebase
-        FirebaseRecipeRepository.getInstance(this).fetchAndStoreRecipeNames(new FirebaseRecipeRepository.OnRecipeNamesLoadedListener() {
-            @Override
-            public void onRecipeNamesLoaded(int count) {
-                // Tên công thức đã được tải thành công
-            }
+        FirebaseRecipeRepository.getInstance(this)
+                .fetchAndStoreRecipeNames(new FirebaseRecipeRepository.OnRecipeNamesLoadedListener() {
+                    @Override
+                    public void onRecipeNamesLoaded(int count) {
+                        // Tên công thức đã được tải thành công
+                    }
 
-            @Override
-            public void onError(String errorMessage) {
-                // Handle error
-            }
-        });
+                    @Override
+                    public void onError(String errorMessage) {
+                        // Handle error
+                    }
+                });
         navigationManager = new NavigationManager(getSupportFragmentManager());
 
         bottomNavigationView = findViewById(R.id.bottomNavigation);
@@ -61,9 +61,9 @@ public class MainActivity extends AppCompatActivity implements RecipeSearchFragm
 
             if (item.getItemId() == R.id.nav_search) {
                 newTabTag = NavigationManager.TAG_SEARCH_FRAGMENT;
-            }else if(item.getItemId() == R.id.nav_shopping){ //TODO: Thay bằng fragment thực tế
+            } else if (item.getItemId() == R.id.nav_shopping) { // TODO: Thay bằng fragment thực tế
                 newTabTag = NavigationManager.TAG_POST_RESCIPE_FRAGMENT;
-            }else if(item.getItemId() == R.id.nav_account){ //TODO: Thay bằng fragment thực tế
+            } else if (item.getItemId() == R.id.nav_account) { // TODO: Thay bằng fragment thực tế
                 newTabTag = NavigationManager.TAG_ACCOUNT;
             }
 

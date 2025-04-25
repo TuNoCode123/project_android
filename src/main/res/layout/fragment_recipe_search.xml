@@ -74,62 +74,70 @@
 
     <HorizontalScrollView
         android:id="@+id/category_scroll"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxHeight="100dp"
         android:layout_marginTop="16dp"
         android:scrollbars="none"
-        app:layout_constraintTop_toBottomOf="@id/search_card">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_card">
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_group"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            app:singleLine="true">
+            android:orientation="horizontal"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_mi_cay"
+                android:id="@+id/chipNewRecipes"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Mì cay" />
+                android:layout_marginEnd="8dp"
+                android:checked="true"
+                android:text="@string/new_recipes"
+                android:textColor="#FF5722"
+                app:chipBackgroundColor="@android:color/white"
+                app:chipIcon="@drawable/ic_new_recipe"
+                app:chipIconTint="#FF5722" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_lau_thai"
+                android:id="@+id/chipPopularDishes"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lẩu thái" />
+                android:layout_marginEnd="8dp"
+                android:text="@string/popular_dishes"
+                android:textColor="#333333"
+                app:chipBackgroundColor="@android:color/white"
+                app:chipIcon="@drawable/ic_popular_dish"
+                app:chipIconTint="#FFA000" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_chao_thit_bam"
+                android:id="@+id/chipCookingVideos"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cháo thịt bằm" />
+                android:layout_marginEnd="8dp"
+                android:text="@string/cooking_video"
+                android:textColor="#333333"
+                app:chipBackgroundColor="@android:color/white"
+                app:chipIcon="@drawable/ic_video"
+                app:chipIconTint="#4CAF50" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_chan_ga_nuong"
+                android:id="@+id/chipIngredientSuggestions"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chân gà nướng" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_thit_ham"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Thịt hầm" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_ga_ran"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Gà rán" />
-        </com.google.android.material.chip.ChipGroup>
+                android:text="Gợi ý từ nguyên liệu"
+                android:textColor="#333333"
+                app:chipBackgroundColor="@android:color/white"
+                app:chipIcon="@drawable/ic_ingredient"
+                app:chipIconTint="#2196F3" />
+        </LinearLayout>
     </HorizontalScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
