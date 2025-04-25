@@ -65,8 +65,8 @@ public class MainActivity extends AppCompatActivity implements RecipeSearchFragm
                 newTabTag = NavigationManager.TAG_POST_RESCIPE_FRAGMENT;
             }else if(item.getItemId() == R.id.nav_search){ //TODO: Thay bằng fragment thực tế
                 newTabTag = NavigationManager.TAG_SEARCH_FRAGMENT;
-            }else if(item.getItemId() == R.id.nav_search){ //TODO: Thay bằng fragment thực tế
-                newTabTag = NavigationManager.TAG_SEARCH_FRAGMENT;
+            }else if(item.getItemId() == R.id.nav_account){ //TODO: Thay bằng fragment thực tế
+                newTabTag = NavigationManager.TAG_ACCOUNT;
             }
 
             if (!newTabTag.equals(navigationManager.getCurrentTabTag())) {

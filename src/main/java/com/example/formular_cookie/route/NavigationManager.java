@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.formular_cookie.Account;
 import com.example.formular_cookie.HomeFragment;
 import com.example.formular_cookie.PostRecipeFragment;
 import com.example.formular_cookie.R;
@@ -28,6 +29,8 @@ public class NavigationManager {
     private static final String TAG_DETAIL_FRAGMENT = "detail_fragment";
     public static final String TAG_POST_RESCIPE_FRAGMENT = "postRescipe_fragment";
 
+
+    public static final String TAG_ACCOUNT = "account_fragment";
     public NavigationManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
         initTabStates();
@@ -52,6 +55,8 @@ public class NavigationManager {
         tabStates.put(TAG_HOME_FRAGMENT, new TabState());
         tabStates.put(TAG_SEARCH_FRAGMENT, new TabState());
         tabStates.put(TAG_POST_RESCIPE_FRAGMENT, new TabState());
+        tabStates.put(TAG_ACCOUNT, new TabState());
+
     }
 
     // Chuyển đến tab mới
@@ -64,6 +69,8 @@ public class NavigationManager {
                 fragment = new RecipeSearchFragment();
             } else if (tabTag.equals(TAG_POST_RESCIPE_FRAGMENT)) {
                 fragment = new PostRecipeFragment();
+            }else if (tabTag.equals(TAG_ACCOUNT)) {
+                fragment = new Account();
             }
             fragmentMap.put(tabTag, fragment);
         }

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- Thêm Button Back cạnh tên người dùng -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="start"
+        android:layout_marginBottom="16dp"
+        android:id="@+id/btn_back_layout">
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_back_round"
+            android:contentDescription="Back"
+            android:padding="8dp"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/username_label"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"/>
+    </LinearLayout>
+
+    <!-- Hiển thị Email -->
+    <TextView
+        android:id="@+id/tv_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_below="@id/btn_back_layout"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Công thức yêu thích -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/favorite_recipes"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_below="@id/tv_email"
+        android:layout_marginBottom="12dp"/>
+
+    <LinearLayout
+        android:id="@+id/layout_favorites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/tv_email"
+        android:paddingTop="20dp"
+        android:layout_marginBottom="32dp" />
+
+    <!-- Phần nội dung chiếm không gian còn lại -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_below="@id/layout_favorites"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Nút nằm ở dưới cùng, gần thanh điều hướng -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
+
+        <Button
+            android:id="@+id/btn_delete_user"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/text_delete"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#F44336"/>
+    </LinearLayout>
+
+</RelativeLayout>
