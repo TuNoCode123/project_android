@@ -68,21 +68,22 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:drawableStart="@drawable/chef_avatar"
                     android:drawablePadding="8dp"
                     android:textSize="14sp"
                     android:gravity="center_vertical"
+                    app:drawableStartCompat="@drawable/chef_avatar"
                     tools:text="Unknown" />
 
-                <TextView
-                    android:id="@+id/tv_followers"
-                    android:layout_width="0dp"
+                <ImageView
+                    android:id="@+id/iv_like_button"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableStart="@drawable/ic_health"
-                    android:drawablePadding="8dp"
-                    android:textSize="14sp"
-                    tools:text="1000 followers" />
+                    android:src="@drawable/ic_favorite_border"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"/>
+
             </LinearLayout>
 
             <TextView

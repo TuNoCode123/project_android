@@ -27,7 +27,7 @@
     <string name="hint_unit">Unit</string>
     <string name="text_view_details">View Details</string>
     <string name="hint_step_description">Step description</string>
-    <string name="search_prompt">Enter the recipe name you're looking for</string>
+    <string name="search_prompt">Enter the recipe name you\'re looking for</string>
     <string name="no_results">No recipes found. Please try another keyword.</string>
     <string name="search_error">Error while searching. Please try again.</string>
     <string name="network_error">Network error. Please check your connection and try again.</string>
@@ -40,6 +40,6 @@
     <string name="no_favorites">No favorite recipes</string>
     <string name="favorite_recipes">Favorite recipes:</string>
     <string name="posted_recipes">Posted recipes:</string>
-    <string name="no_posted_recipes">The user hasn't posted any recipes yet.</string>
+    <string name="no_posted_recipes">The user hasn\'t posted any recipes yet.</string>
     <string name="username_label">Username</string>
 </resources>
