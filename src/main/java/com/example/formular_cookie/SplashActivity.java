@@ -29,8 +29,8 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(new Intent(SplashActivity.this, IntroActivity.class));
             } else {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.clearPersistence();
 
+                Log.d("SplashActivity", "Cleared Firestore persistence");
                 // Lấy thông tin người dùng từ Firebase
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
@@ -64,6 +64,7 @@ public class SplashActivity extends AppCompatActivity {
                         finish();
                     });
                 } else {
+                    Log.d("SplashActivity", "No user logged in");
                     // Nếu người dùng chưa đăng nhập, chuyển đến LoginActivity
                     startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                     finish();

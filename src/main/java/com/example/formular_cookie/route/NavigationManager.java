@@ -10,6 +10,7 @@ import com.example.formular_cookie.fragment.PostRecipeFragment;
 import com.example.formular_cookie.R;
 import com.example.formular_cookie.fragment.RecipeDetailFragment;
 import com.example.formular_cookie.fragment.RecipeSearchFragment;
+import com.example.formular_cookie.fragment.UserPostRecipeFragment;
 import com.example.formular_cookie.model.Recipe;
 
 import java.util.HashMap;
@@ -68,7 +69,7 @@ public class NavigationManager {
             } else if (tabTag.equals(TAG_SEARCH_FRAGMENT)) {
                 fragment = new RecipeSearchFragment();
             } else if (tabTag.equals(TAG_POST_RESCIPE_FRAGMENT)) {
-                fragment = new PostRecipeFragment();
+                fragment = new UserPostRecipeFragment();
             }else if (tabTag.equals(TAG_ACCOUNT)) {
                 fragment = new AccountFragment();
             }
