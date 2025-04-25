@@ -6,12 +6,12 @@
 
     <!-- Thêm Button Back cạnh tên người dùng -->
     <LinearLayout
+        android:id="@+id/btn_back_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="start"
-        android:layout_marginBottom="16dp"
-        android:id="@+id/btn_back_layout">
+        android:layout_marginBottom="16dp">
 
         <ImageView
             android:id="@+id/btn_back"
@@ -30,9 +30,7 @@
             android:text="@string/username_label"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"/>
+            android:layout_marginBottom="8dp" />
     </LinearLayout>
 
     <!-- Hiển thị Email -->
@@ -44,36 +42,57 @@
         android:textSize="16sp"
         android:textColor="@android:color/darker_gray"
         android:layout_below="@id/btn_back_layout"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp" />
 
     <!-- Công thức yêu thích -->
     <TextView
+        android:id="@+id/tv_favorite_recipes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/favorite_recipes"
         android:textStyle="bold"
         android:textSize="16sp"
         android:layout_below="@id/tv_email"
-        android:layout_marginBottom="12dp"/>
+        android:layout_marginBottom="12dp" />
 
     <LinearLayout
         android:id="@+id/layout_favorites"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@id/tv_email"
+        android:layout_below="@id/tv_favorite_recipes"
         android:paddingTop="20dp"
         android:layout_marginBottom="32dp" />
 
-    <!-- Phần nội dung chiếm không gian còn lại -->
+    <!-- Công thức đã đăng -->
+    <TextView
+        android:id="@+id/tv_posted_recipes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Công thức đã đăng"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_below="@id/layout_favorites"
+        android:layout_marginBottom="12dp" />
+
+    <LinearLayout
+        android:id="@+id/layout_posted_recipes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/tv_posted_recipes"
+        android:paddingTop="20dp"
+        android:layout_marginBottom="32dp" />
+
+    <!-- Phần nội dung còn lại -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_below="@id/layout_favorites"
+        android:layout_below="@id/layout_posted_recipes"
         android:layout_marginBottom="16dp" />
 
-    <!-- Nút nằm ở dưới cùng, gần thanh điều hướng -->
+    <!-- Nút xóa người dùng -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -91,7 +110,7 @@
             android:text="@string/text_delete"
             android:textSize="16sp"
             android:textColor="@android:color/white"
-            android:backgroundTint="#F44336"/>
+            android:backgroundTint="#F44336" />
     </LinearLayout>
 
 </RelativeLayout>
