@@ -69,7 +69,7 @@
         android:id="@+id/tv_posted_recipes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Công thức đã đăng"
+        android:text="@string/posted_recipes"
         android:textStyle="bold"
         android:textSize="16sp"
         android:layout_below="@id/layout_favorites"

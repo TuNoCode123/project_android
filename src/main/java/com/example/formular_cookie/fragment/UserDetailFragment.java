@@ -124,7 +124,7 @@ public class UserDetailFragment extends Fragment {
                 .addOnSuccessListener(querySnapshot -> {
                     if (querySnapshot.isEmpty()) {
                         TextView textView = new TextView(getContext());
-                        textView.setText("Người dùng chưa đăng công thức nào.");
+                        textView.setText(getString(R.string.no_posted_recipes));
                         textView.setTextSize(16);
                         textView.setPadding(8, 8, 8, 8);
                         layoutPostedRecipes.addView(textView);

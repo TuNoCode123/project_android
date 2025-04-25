@@ -38,5 +38,7 @@
     <string name="search_recipes">TÌM KIẾM</string>
     <string name="no_favorites">Không có công thức yêu thích</string>
     <string name="favorite_recipes">Công thức yêu thích:</string>
+    <string name="posted_recipes">Công thức đã đăng:</string>
+    <string name="no_posted_recipes">"Người dùng chưa đăng công thức nào."</string>
     <string name="username_label">Tên người dùng</string>
 </resources>
